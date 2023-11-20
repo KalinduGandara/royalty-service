@@ -4,12 +4,26 @@
     <%@ page import="java.util.List" %>
     <%@ page import="java.util.ArrayList" %>
     <%@ page import="com.example.royalty.modal.Product" %>
-    <title>Data Table Example</title>
+    <title>Product</title>
     <!-- Include necessary CSS files -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+        <style>
+            .dataTables_filter {
+                display: none; /* Hide the default search bar */
+            }
+        </style>
 </head>
 <body>
-
+<h1> <center> Product </center> </h1>
+<br/>
+<!-- Search inputs outside the table -->
+<div>
+    <label for="nameSearch">Search Name: </label>
+    <input type="text" id="nameSearch" placeholder="Search Name">
+    <label for="codeSearch">Search Code: </label>
+    <input type="text" id="codeSearch" placeholder="Search Code">
+</div>
+<br/>
 <table id="dataTable" class="display">
     <thead>
         <tr>
@@ -28,7 +42,7 @@
                    // Creating sample Product objects
                    Product product1 = new Product();
                    product1.setId(1);
-                   product1.setName("Product 1");
+                   product1.setName("ssss");
                    product1.setCode("P001");
                    product1.setCapacity(100);
                    product1.setDescription("Description for Product 1");
@@ -36,7 +50,7 @@
 
                    Product product2 = new Product();
                    product2.setId(2);
-                   product2.setName("Product 2");
+                   product2.setName("dd");
                    product2.setCode("P002");
                    product2.setCapacity(150);
                    product2.setDescription("Description for Product 2");
@@ -66,9 +80,20 @@
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
 <script>
-    // Activate DataTable
     $(document).ready( function () {
-        $('#dataTable').DataTable();
+        // Initialize DataTable
+        var table = $('#dataTable').DataTable();
+
+        // Function to apply search on specific columns
+        function applyColumnSearch(inputSelector, columnIndex) {
+            $(inputSelector).on('keyup change', function () {
+                table.column(columnIndex).search(this.value).draw();
+            });
+        }
+
+        // Apply search for Name and Code columns
+        applyColumnSearch('#nameSearch', 0); // Replace '0' with the actual index of the Name column
+        applyColumnSearch('#codeSearch', 1); // Replace '1' with the actual index of the Code column
     });
 </script>
 
