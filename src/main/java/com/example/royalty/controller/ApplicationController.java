@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/")
 public class ApplicationController {
-    @RequestMapping("/")
+    @RequestMapping("")
     public String welcome(Map<String, Object> model) {
         model.put("message", "Hello World");
-        return "welcome";
+        return "welcomepage";
     }
 }
 

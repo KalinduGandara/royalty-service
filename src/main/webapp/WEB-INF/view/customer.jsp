@@ -41,65 +41,18 @@
     <tbody>
         <!-- Here, you can dynamically populate the table rows with data -->
         <%
-            List<Customer> customerList = new ArrayList<>();
+            List<Customer> customers = (List<Customer>) request.getAttribute("customers");
 
-                   // Creating sample Customer objects
-                   Customer customer1 = new Customer();
-                   customer1.setId(1);
-                   customer1.setName("Alice");
-                   customer1.setNic("NIC111");
-                   customer1.setPhone("111-111-1111");
-                   customer1.setAddress("123 Street");
-                   customer1.setArea("Area A");
-                   customer1.setPoints(100);
-                   customer1.setNotes("Regular customer");
-
-                   Customer customer2 = new Customer();
-                   customer2.setId(2);
-                   customer2.setName("Bob");
-                   customer2.setNic("NIC222");
-                   customer2.setPhone("222-222-2222");
-                   customer2.setAddress("456 Avenue");
-                   customer2.setArea("Area B");
-                   customer2.setPoints(150);
-                   customer2.setNotes("VIP customer");
-
-                   Customer customer3 = new Customer();
-                   customer3.setId(3);
-                   customer3.setName("Charlie");
-                   customer3.setNic("NIC333");
-                   customer3.setPhone("333-333-3333");
-                   customer3.setAddress("789 Road");
-                   customer3.setArea("Area C");
-                   customer3.setPoints(200);
-                   customer3.setNotes("Frequent customer");
-
-                   Customer customer4 = new Customer();
-                   customer4.setId(4);
-                   customer4.setName("David");
-                   customer4.setNic("NIC444");
-                   customer4.setPhone("444-444-4444");
-                   customer4.setAddress("1010 Lane");
-                   customer4.setArea("Area D");
-                   customer4.setPoints(75);
-                   customer4.setNotes("New customer");
-
-                   // Adding customers to the list
-                   customerList.add(customer1);
-                   customerList.add(customer2);
-                   customerList.add(customer3);
-                   customerList.add(customer4);
-
-            for (Customer data : customerList) {
+            for (Customer customer : customers) {
         %>
         <tr>
-                <td><%= data.getName() %></td>
-                <td><%= data.getNic() %></td>
-                <td><%= data.getPhone() %></td>
-                <td><%= data.getAddress() %></td>
-                <td><%= data.getArea() %></td>
-                <td><%= data.getPoints() %></td>
-                <td><%= data.getNotes() %></td>
+                <td><%= customer.getName() %></td>
+                <td><%= customer.getNic() %></td>
+                <td><%= customer.getPhone() %></td>
+                <td><%= customer.getAddress() %></td>
+                <td><%= customer.getArea() %></td>
+                <td><%= customer.getPoints() %></td>
+                <td><%= customer.getNotes() %></td>
         </tr>
         <%
             }

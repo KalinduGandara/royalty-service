@@ -6,6 +6,16 @@
     <title>Spring Boot with JSP Example</title>
 </head>
 <body>
-<h1>Hello, World!</h1>
+<%--Nav bar--%>
+<%@include file="nav.jsp" %>
+
+<%--JSP Content--%>
+<div class="container">
+    <div class="starter-template">
+        <h1>Spring Boot JSP Example</h1>
+        <p class="lead">This is a Spring Boot JSP Example</p>
+    </div>
+</div>
+
 </body>
 </html>

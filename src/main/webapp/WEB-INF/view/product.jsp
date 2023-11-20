@@ -37,37 +37,16 @@
     <tbody>
         <!-- Here, you can dynamically populate the table rows with data -->
         <%
-           List<Product> productList = new ArrayList<>();
+           List<Product> products = (List<Product>) request.getAttribute("products");
 
-                   // Creating sample Product objects
-                   Product product1 = new Product();
-                   product1.setId(1);
-                   product1.setName("ssss");
-                   product1.setCode("P001");
-                   product1.setCapacity(100);
-                   product1.setDescription("Description for Product 1");
-                   product1.setPoints(50);
-
-                   Product product2 = new Product();
-                   product2.setId(2);
-                   product2.setName("dd");
-                   product2.setCode("P002");
-                   product2.setCapacity(150);
-                   product2.setDescription("Description for Product 2");
-                   product2.setPoints(75);
-
-                   // Adding products to the list
-                   productList.add(product1);
-                   productList.add(product2);
-
-            for (Product data : productList) {
+            for (Product product : products) {
         %>
         <tr>
-            <td><%= data.getName() %></td>
-            <td><%= data.getCode() %></td>
-            <td><%= data.getCapacity() %></td>
-            <td><%= data.getDescription() %></td>
-            <td><%= data.getPoints() %></td>
+            <td><%= product.getName() %></td>
+            <td><%= product.getCode() %></td>
+            <td><%= product.getCapacity() %></td>
+            <td><%= product.getDescription() %></td>
+            <td><%= product.getPoints() %></td>
         </tr>
         <%
             }

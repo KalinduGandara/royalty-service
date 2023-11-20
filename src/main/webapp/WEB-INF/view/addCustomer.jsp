@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Product</title>
+    <title>Add Customer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -39,25 +39,27 @@
         }
     </style>
 </head>
+
 <body>
-    <h1>Add Product</h1>
-    <form action="/product/create" method="post">
-        <label for="name">Name:</label>
-        <input required type="text" id="name" name="name">
+    <h1>Add Customer</h1>
+    <form action="/customer/create" method="post">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" required>
+        <label for="nic">NIC</label>
+        <input type="text" name="nic" id="nic" required>
+        <label for="phone">Phone</label>
+        <input type="text" name="phone" id="phone" required>
+        <label for="address">Address</label>
+        <input type="text" name="address" id="address" required>
+        <label for="area">Area</label>
+        <input type="text" name="area" id="area" required>
+        <label for="points">Points</label>
+        <input type="number" name="points" id="points" required>
+        <label for="notes">Notes</label>
+        <textarea name="notes" id="notes" rows="5"></textarea>
+        <br>
 
-        <label for="code">Code:</label>
-        <input required type="text" id="code" name="code">
-
-        <label for="capacity">Capacity:</label>
-        <input required type="number" id="capacity" name="capacity">
-
-        <label for="description">Description:</label>
-        <textarea id="description" name="description"></textarea>
-
-        <label for="points">Points:</label>
-        <input required type="number" id="points" name="points">
-
-        <input type="submit" value="Add Product">
+        <input type="submit" value="Add Customer">
     </form>
 </body>
 </html>
