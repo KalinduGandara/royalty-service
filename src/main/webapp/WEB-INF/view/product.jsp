@@ -44,7 +44,7 @@
 
                    // Adding products to the list
                    productList.add(product1);
-                   product+List.add(product2);
+                   productList.add(product2);
 
             for (Product data : productList) {
         %>
