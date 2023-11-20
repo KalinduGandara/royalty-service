@@ -13,9 +13,9 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/product")
     public String all() {
-        return "welcomepage";
+        return "product";
     }
 
 
