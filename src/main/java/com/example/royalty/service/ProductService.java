@@ -21,16 +21,27 @@ public class ProductService {
     }
 
     public boolean create(Product product) {
-        if (validateProduct(product)) {
-            productRepository.save(product);
-            return true;
+        if (productRepository.existsByCode(product.getCode())) {
+            return false;
         }
-        return false;
+        productRepository.save(product);
+        return true;
     }
 
-    private boolean validateProduct(Product product) {
-        return product.getName().isEmpty() || product.getCode().isEmpty() || product.getDescription().isEmpty() ;
+    public boolean update(long id, Product product) {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isEmpty()) {
+            return false;
+        }
+        Product product1 = productOptional.get();
+        product1.setName(product.getName());
+        product1.setCapacity(product.getCapacity());
+        product1.setDescription(product.getDescription());
+        product1.setPoints(product.getPoints());
+        productRepository.save(product1);
+        return true;
     }
+
 
     public Product getById(long id) {
         Optional<Product> product = productRepository.findById(id);

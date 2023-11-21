@@ -4,63 +4,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Update Product</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1 {
-            text-align: center;
-        }
-        form {
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input[type="text"],
-        textarea {
-            width: calc(100% - 10px);
-            padding: 5px;
-            margin-bottom: 10px;
-        }
-        input[type="submit"] {
-            padding: 8px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <title>View Product</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<% Product product = (Product) request.getAttribute("product");%>
-    <h1>Update Product</h1>
-    <form action="/product/create" method="post">
-        <input type="hidden" name="id"  />
+<h1>View Product</h1>
+<div class="w-50 p-3">
+
+    <%--@elvariable id="product" type="com.example.royalty.modal.Product"--%>
+    <form:form action="/product/${product.id}" method="post" modelAttribute="product">
+    <div class="form-group">
         <label for="name">Name:</label>
-        <input required type="text" id="name" name="name" value="<%= product.getName()%>">
-
+        <form:input path="name" type="text" id="name" name="name" class="form-control" />
+        <form:errors path="name" cssClass="text-danger"/>
+    </div>
+    <div class="form-group">
         <label for="code">Code:</label>
-        <input required type="text" id="code" name="code" value="<%= product.getCode()%>">
-
+        <form:input path="code" type="text" id="code" name="code" class="form-control"/>
+        <form:errors path="code" cssClass="text-danger"/>
+    </div>
+    <div class="form-group">
         <label for="capacity">Capacity:</label>
-        <input required type="number" id="capacity" name="capacity" value="<%= product.getCapacity()%>">
-
+        <form:input path="capacity" type="number" id="capacity" name="capacity" class="form-control"/>
+        <form:errors path="capacity" cssClass="text-danger"/>
+    </div>
+    <div class="form-group">
         <label for="description">Description:</label>
-        <textarea id="description" name="description"><%= product.getDescription()%></textarea>
-
+        <form:textarea path="description" id="description" name="description" class="form-control"></form:textarea>
+    </div>
+    <div class="form-group">
         <label for="points">Points:</label>
-        <input required type="number" id="points" name="points" value="<%= product.getPoints()%>">
+        <form:input path="points" type="number" id="points" name="points" class="form-control"/>
+        <form:errors path="points" cssClass="text-danger"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Update Product</button>
+</div>
+</form:form>
 
-        <input type="submit" value="Add Product">
-    </form>
 </body>
 </html>
