@@ -1,80 +1,66 @@
+<%@ page import="com.example.royalty.modal.Product" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <%@ page import="java.util.List" %>
-    <%@ page import="java.util.ArrayList" %>
-    <%@ page import="com.example.royalty.modal.Product" %>
-    <title>Product</title>
-    <!-- Include necessary CSS files -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
-        <style>
-            .dataTables_filter {
-                display: none; /* Hide the default search bar */
-            }
-        </style>
+    <title>Update Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        textarea {
+            width: calc(100% - 10px);
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        input[type="submit"] {
+            padding: 8px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-<h1> <center> Product </center> </h1>
-<br/>
-<!-- Search inputs outside the table -->
-<div>
-    <label for="nameSearch">Search Name: </label>
-    <input type="text" id="nameSearch" placeholder="Search Name">
-    <label for="codeSearch">Search Code: </label>
-    <input type="text" id="codeSearch" placeholder="Search Code">
-</div>
-<br/>
-<table id="dataTable" class="display">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Code</th>
-            <th>Capacity</th>
-            <th>Description</th>
-            <th>Points</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Here, you can dynamically populate the table rows with data -->
-        <%
-           List<Product> products = (List<Product>) request.getAttribute("products");
+<% Product product = (Product) request.getAttribute("product");%>
+    <h1>Update Product</h1>
+    <form action="/product/create" method="post">
+        <input type="hidden" name="id"  />
+        <label for="name">Name:</label>
+        <input required type="text" id="name" name="name" value="<%= product.getName()%>">
 
-            for (Product product : products) {
-        %>
-        <tr>
-            <td><%= product.getName() %></td>
-            <td><%= product.getCode() %></td>
-            <td><%= product.getCapacity() %></td>
-            <td><%= product.getDescription() %></td>
-            <td><%= product.getPoints() %></td>
-        </tr>
-        <%
-            }
-        %>
-    </tbody>
-</table>
+        <label for="code">Code:</label>
+        <input required type="text" id="code" name="code" value="<%= product.getCode()%>">
 
-<!-- Include necessary JS files -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <label for="capacity">Capacity:</label>
+        <input required type="number" id="capacity" name="capacity" value="<%= product.getCapacity()%>">
 
-<script>
-    $(document).ready( function () {
-        // Initialize DataTable
-        var table = $('#dataTable').DataTable();
+        <label for="description">Description:</label>
+        <textarea id="description" name="description"><%= product.getDescription()%></textarea>
 
-        // Function to apply search on specific columns
-        function applyColumnSearch(inputSelector, columnIndex) {
-            $(inputSelector).on('keyup change', function () {
-                table.column(columnIndex).search(this.value).draw();
-            });
-        }
+        <label for="points">Points:</label>
+        <input required type="number" id="points" name="points" value="<%= product.getPoints()%>">
 
-        // Apply search for Name and Code columns
-        applyColumnSearch('#nameSearch', 0); // Replace '0' with the actual index of the Name column
-        applyColumnSearch('#codeSearch', 1); // Replace '1' with the actual index of the Code column
-    });
-</script>
-
+        <input type="submit" value="Add Product">
+    </form>
 </body>
 </html>

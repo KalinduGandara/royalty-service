@@ -4,9 +4,7 @@ import com.example.royalty.modal.Product;
 import com.example.royalty.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,7 +21,7 @@ public class ProductController {
     public String all(Model model) {
         List<Product> products = productService.getAll();
         model.addAttribute("products", products);
-        return "product";
+        return "products";
     }
 
     @GetMapping("/create")
@@ -33,10 +31,22 @@ public class ProductController {
 
     @PostMapping("/create")
     public String create(Product product, Model model) {
-        productService.create(product);
-        return "redirect:/product";
+        if (productService.create(product)){
+            return "redirect:/product";
+        }
+        return "addProduct";
     }
 
+//    get product by id
+    @GetMapping("/{id}")
+    public String getOne(@PathVariable long id, Model model) {
+        Product product = productService.getById(id);
+        if (product == null) {
+            return "redirect:/product";
+        }
+        model.addAttribute("product", product);
+        return "product";
+    }
 
 
 
