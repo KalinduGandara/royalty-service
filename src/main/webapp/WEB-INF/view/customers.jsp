@@ -2,7 +2,6 @@
 <html>
 <head>
     <%@ page import="java.util.List" %>
-    <%@ page import="java.util.ArrayList" %>
     <%@ page import="com.example.royalty.modal.Customer" %>
     <title>Customer</title>
     <!-- Include necessary CSS files -->

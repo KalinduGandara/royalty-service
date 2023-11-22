@@ -16,14 +16,15 @@ public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String message;
     private String phone;
 
-    private long cid;
+    private Long cid;
 
     private LocalDateTime createTime;
-    private boolean send;
+
+    private Boolean send;
     private LocalDateTime sendTime;
 
 }

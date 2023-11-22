@@ -15,7 +15,7 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
     public boolean create(Customer customer) {
-        if (validateCustomer(customer)) {
+        if (customerRepository.findByNic(customer.getNic()) == null) {
             customerRepository.save(customer);
             return true;
         }
@@ -38,10 +38,6 @@ public class CustomerService {
             customer.setNotes(row[6]);
             customerRepository.save(customer);
         }
-    }
-
-    private boolean validateCustomer(Customer customer) {
-        return customer.getName().isEmpty() || customer.getNic().isEmpty() || customer.getPhone().isEmpty() || customer.getAddress().isEmpty() ;
     }
 
 }
