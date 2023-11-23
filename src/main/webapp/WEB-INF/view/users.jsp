@@ -6,15 +6,19 @@
     <title>User</title>
     <!-- Include necessary CSS files -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<h1> <center> User </center> </h1>
+<%@include file="nav.jsp" %>
+<h1> User </h1>
 <br/>
 <table id="dataTable" class="display">
     <thead>
         <tr>
             <th>Name</th>
             <th>NIC</th>
+            <th>EID</th>
             <th>Description</th>
             <th>Roll</th>
         </tr>
@@ -29,6 +33,7 @@
         <tr>
             <td><a href="/user/<%= user.getId()%>"><%= user.getName() %></a></td>
             <td><%= user.getNic() %></td>
+            <td><%= user.getEid() %></td>
             <td><%= user.getDescription() %></td>
             <td><%= user.getRoll() %></td>
         </tr>

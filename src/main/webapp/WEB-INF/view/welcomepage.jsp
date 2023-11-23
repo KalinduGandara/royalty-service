@@ -3,7 +3,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Spring Boot with JSP Example</title>
+    <title>Royalty</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 <%--Nav bar--%>

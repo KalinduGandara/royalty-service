@@ -9,6 +9,7 @@
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+<%@include file="nav.jsp" %>
 <h1>View User</h1>
 <div class="w-50 p-3">
 

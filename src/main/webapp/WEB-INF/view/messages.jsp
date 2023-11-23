@@ -7,14 +7,12 @@
     <title>Product</title>
     <!-- Include necessary CSS files -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-        <style>
-            .dataTables_filter {
-                display: none; /* Hide the default search bar */
-            }
-        </style>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<h1> <center> Product </center> </h1>
+<%@include file="nav.jsp" %>
+<h1> Product </h1>
 <br/>
 <!-- Search inputs outside the table -->
 <input type="text" id="search" placeholder="search">
