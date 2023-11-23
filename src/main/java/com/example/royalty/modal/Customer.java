@@ -1,6 +1,9 @@
 package com.example.royalty.modal;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,11 +19,18 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotEmpty(message = "Field name is required.")
     private String name;
+    @NotEmpty(message = "Field NIC is required.")
     private String nic;
+    @NotEmpty(message = "Field phone is required.")
     private String phone;
+    @NotEmpty(message = "Field address is required.")
     private String address;
+    @NotEmpty(message = "Field area is required.")
     private String area;
+    @PositiveOrZero(message = "Points must be greater than 0.")
+    @NotNull(message = "Field points is required.")
     private int points;
     private String notes;
 

@@ -4,12 +4,11 @@ import com.example.royalty.modal.Customer;
 import com.example.royalty.service.CustomerService;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -35,17 +34,21 @@ public class CustomerController {
 
     @GetMapping("/create")
     public String createPage(Model model) {
-
+        model.addAttribute("customer", new Customer());
         return "addCustomer";
 
     }
 
     @PostMapping("/create")
-    public String create(Customer customer) {
-        if (customerService.create(customer)) {
+    public String create(@Valid @ModelAttribute("customer")Customer customer, BindingResult result) {
+        if (result.hasErrors()){
+            System.out.println(result.getAllErrors());
+            return "addCustomer";
+        }
+        if (customerService.create(customer)){
             return "redirect:/customer";
         }
-
+        result.rejectValue("nic", "unique", "NIC is already exist.");
         return "addCustomer";
     }
 
@@ -58,6 +61,28 @@ public class CustomerController {
         customerService.createBulk(rows);
         return "redirect:/";
 
+    }
+
+    @GetMapping("/{id}")
+    public String getOne(@PathVariable long id, Model model) {
+        Customer customer = customerService.getById(id);
+        if (customer == null) {
+            return "redirect:/customer";
+        }
+        model.addAttribute("customer", customer);
+        return "customer";
+    }
+
+    @PostMapping("/{id}")
+    public String update(@PathVariable long id, @Valid @ModelAttribute("customer") Customer customer, BindingResult result) {
+        if (result.hasErrors()){
+            System.out.println(result.getAllErrors());
+            return "customer";
+        }
+        if (customerService.update(id,customer)) {
+            return "redirect:/customer";
+        }
+        return "customer";
     }
 
 }

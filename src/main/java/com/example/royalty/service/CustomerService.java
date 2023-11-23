@@ -1,10 +1,13 @@
 package com.example.royalty.service;
 
 import com.example.royalty.modal.Customer;
+import com.example.royalty.modal.Product;
+import com.example.royalty.modal.User;
 import com.example.royalty.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -40,4 +43,25 @@ public class CustomerService {
         }
     }
 
+    public boolean update(long id, Customer customer) {
+        Optional<Customer> customerOptional = customerRepository.findById(id);
+        if (customerOptional.isEmpty()) {
+            return false;
+        }
+        Customer customer1 = customerOptional.get();
+        customer1.setName(customer.getName());
+        customer1.setNic(customer.getNic());
+        customer1.setPhone(customer.getPhone());
+        customer1.setAddress(customer.getAddress());
+        customer1.setArea(customer.getArea());
+        customer1.setPoints(customer.getPoints());
+        customer1.setNotes(customer.getNotes());
+        customerRepository.save(customer1);
+        return true;
+    }
+
+    public Customer getById(long id) {
+        Optional<Customer> customer = customerRepository.findById(id);
+        return customer.orElse(null);
+    }
 }

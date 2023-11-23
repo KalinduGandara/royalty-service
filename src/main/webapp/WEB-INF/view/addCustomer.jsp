@@ -4,62 +4,51 @@
 <html>
 <head>
     <title>Add Customer</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1 {
-            text-align: center;
-        }
-        form {
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input[type="text"],
-        textarea {
-            width: calc(100% - 10px);
-            padding: 5px;
-            margin-bottom: 10px;
-        }
-        input[type="submit"] {
-            padding: 8px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-
 <body>
-    <h1>Add Customer</h1>
-    <form action="/customer/create" method="post">
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name" required>
-        <label for="nic">NIC</label>
-        <input type="text" name="nic" id="nic" required>
-        <label for="phone">Phone</label>
-        <input type="text" name="phone" id="phone" required>
-        <label for="address">Address</label>
-        <input type="text" name="address" id="address" required>
-        <label for="area">Area</label>
-        <input type="text" name="area" id="area" required>
-        <label for="points">Points</label>
-        <input type="number" name="points" id="points" required>
-        <label for="notes">Notes</label>
-        <textarea name="notes" id="notes" rows="5"></textarea>
-        <br>
+<h1>Add Customer</h1>
+<div class="w-50 p-3">
 
-        <input type="submit" value="Add Customer">
-    </form>
+    <%--@elvariable id="customer" type="com.example.royalty.modal.Customer"--%>
+    <form:form action="/customer/create" method="post" modelAttribute="customer">
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <form:input path="name" type="text" id="name" name="name" class="form-control" />
+        <form:errors path="name" cssClass="text-danger"/>
+    </div>
+    <div class="form-group">
+        <label for="nic">NIC:</label>
+        <form:input path="nic" type="text" id="nic" name="nic" class="form-control"/>
+        <form:errors path="nic" cssClass="text-danger"/>
+    </div>
+    <div class="form-group">
+        <label for="phone">Phone:</label>
+        <form:input path="phone" type="text" id="phone" name="phone" class="form-control"/>
+        <form:errors path="phone" cssClass="text-danger"/>
+    </div>
+    <div class="form-group">
+        <label for="address">Address:</label>
+        <form:textarea path="address" id="address" name="address" class="form-control"></form:textarea>
+    </div>
+    <div class="form-group">
+        <label for="area">Area:</label>
+        <form:input path="area" type="text" id="area" name="area" class="form-control"/>
+        <form:errors path="area" cssClass="text-danger"/>
+    </div>
+    <div class="form-group">
+        <label for="points">Points:</label>
+        <form:input path="points" type="number" id="points" name="points" class="form-control"/>
+        <form:errors path="points" cssClass="text-danger"/>
+    </div>
+    <div class="form-group">
+        <label for="notes">Notes:</label>
+        <form:textarea path="notes" id="notes" name="notes" class="form-control"></form:textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Customer</button>
+</div>
+</form:form>
+
 </body>
 </html>
