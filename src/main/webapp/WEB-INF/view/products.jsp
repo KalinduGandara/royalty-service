@@ -6,22 +6,9 @@
     <title>Product</title>
     <!-- Include necessary CSS files -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-        <style>
-            .dataTables_filter {
-                display: none; /* Hide the default search bar */
-            }
-        </style>
 </head>
 <body>
 <h1> <center> Product </center> </h1>
-<br/>
-<!-- Search inputs outside the table -->
-<div>
-    <label for="nameSearch">Search Name: </label>
-    <input type="text" id="nameSearch" placeholder="Search Name">
-    <label for="codeSearch">Search Code: </label>
-    <input type="text" id="codeSearch" placeholder="Search Code">
-</div>
 <br/>
 <table id="dataTable" class="display">
     <thead>
@@ -69,17 +56,6 @@
                  'csv', 'excel'
             ]
         } );
-
-        // Function to apply search on specific columns
-        function applyColumnSearch(inputSelector, columnIndex) {
-            $(inputSelector).on('keyup change', function () {
-                table.column(columnIndex).search(this.value).draw();
-            });
-        }
-
-        // Apply search for Name and Code columns
-        applyColumnSearch('#nameSearch', 0); // Replace '0' with the actual index of the Name column
-        applyColumnSearch('#codeSearch', 1); // Replace '1' with the actual index of the Code column
     });
 </script>
 
