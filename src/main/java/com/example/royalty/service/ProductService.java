@@ -1,7 +1,10 @@
 package com.example.royalty.service;
 
+import com.example.royalty.modal.Code;
 import com.example.royalty.modal.Product;
+import com.example.royalty.repository.CodeRepository;
 import com.example.royalty.repository.ProductRepository;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,8 +15,11 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    private final CodeRepository codeRepository;
+
+    public ProductService(ProductRepository productRepository, CodeRepository codeRepository) {
         this.productRepository = productRepository;
+        this.codeRepository = codeRepository;
     }
 
     public List<Product> getAll() {
@@ -46,5 +52,20 @@ public class ProductService {
     public Product getById(long id) {
         Optional<Product> product = productRepository.findById(id);
         return product.orElse(null);
+    }
+
+    public boolean generateCode(Product product, int count) {
+        for (int i = 0; i < count; i++) {
+            String generatedString = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
+            Code code = new Code();
+            code.setCode(generatedString);
+            code.setProduct(product);
+            codeRepository.save(code);
+        }
+        return true;
+    }
+
+    public List<Code> getCodes(long id) {
+        return codeRepository.findAllByProductId(id);
     }
 }

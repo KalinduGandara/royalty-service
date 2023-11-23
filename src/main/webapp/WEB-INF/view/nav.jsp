@@ -25,6 +25,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="/user/create">Create User</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/message">Messages</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/message/create">Bulk Message</a>
+            </li>
 
         </ul>
         <div class="form-inline my-2 my-lg-0 ">

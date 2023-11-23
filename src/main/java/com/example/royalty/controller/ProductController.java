@@ -1,5 +1,6 @@
 package com.example.royalty.controller;
 
+import com.example.royalty.modal.Code;
 import com.example.royalty.modal.Product;
 import com.example.royalty.service.ProductService;
 import jakarta.validation.Valid;
@@ -54,6 +55,28 @@ public class ProductController {
         }
         model.addAttribute("product", product);
         return "product";
+    }
+    @GetMapping("/{id}/codes")
+    public String viewCodes(@PathVariable long id, Model model) {
+        List<Code> codes = productService.getCodes(id);
+        model.addAttribute("codes", codes);
+        return "codes";
+    }
+
+    @PostMapping("/{id}/generate")
+    public String generateCode(@PathVariable long id, Model model) {
+        int count = 1;
+        Product product = productService.getById(id);
+        if (product == null) {
+            return "redirect:/product";
+        }
+        model.addAttribute("product", product);
+        if(productService.generateCode(product, count)){
+            model.addAttribute("message", "Code Generated Successfully.");
+        }else {
+            model.addAttribute("message", "Code Generation Failed.");
+        }
+        return "product"+id;
     }
 
     @PostMapping("/{id}")

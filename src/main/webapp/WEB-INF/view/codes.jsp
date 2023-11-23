@@ -2,8 +2,7 @@
 <html>
 <head>
     <%@ page import="java.util.List" %>
-    <%@ page import="com.example.royalty.modal.Message" %>
-    <%@ page import="java.time.format.DateTimeFormatter" %>
+    <%@ page import="com.example.royalty.modal.Code" %>
     <title>Product</title>
     <!-- Include necessary CSS files -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
@@ -12,38 +11,23 @@
 </head>
 <body>
 <%@include file="nav.jsp" %>
-<h1> Product </h1>
+<h1>Product Codes</h1>
 <br/>
-
-
 <table id="dataTable" class="display">
     <thead>
         <tr>
-            <th>Message</th>
-            <th>Phone</th>
-            <th>Create Time</th>
-            <th>Send</th>
-            <th>Send Time</th>
+            <th>Codes</th>
         </tr>
     </thead>
     <tbody>
         <!-- Here, you can dynamically populate the table rows with data -->
         <%
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            List<Message> messages = (List<Message>) request.getAttribute("messages");
+           List<Code> codes = (List<Code>) request.getAttribute("codes");
 
-            for (Message message : messages) {
-                String sendTime = message.getSendTime() == null ? "Not Sent" : message.getSendTime().format(formatter);
-                String createTime = message.getCreateTime() == null ? "" : message.getCreateTime().format(formatter);
-                String send = message.getSend() ? "Yes" : "No";
-
+            for (Code code : codes) {
         %>
         <tr>
-            <td><%= message.getMessage() %></td>
-            <td><%= message.getPhone() %></td>
-            <td><%= createTime %></td>
-            <td><%= send %></td>
-            <td><%= sendTime %></td>
+            <td><%= code.getCode() %></td>
         </tr>
         <%
             }
@@ -66,9 +50,6 @@
             buttons: [
                  'csv', 'excel'
             ]
-        } );
-        $('#search').on( 'keyup', function () {
-            table.search( this.value ).draw();
         } );
     });
 </script>
