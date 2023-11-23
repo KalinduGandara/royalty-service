@@ -19,6 +19,13 @@
             <li class="nav-item">
                 <a class="nav-link" href="/customer/create">Create Customer</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user">All Users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user/create">Create User</a>
+            </li>
+
         </ul>
     </div>
 </nav>
