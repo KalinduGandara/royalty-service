@@ -20,6 +20,9 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.List;
 
+import static com.example.royalty.util.ReadFile.readCSV;
+import static com.example.royalty.util.ReadFile.readExcel;
+
 @Controller
 @RequestMapping("/product")
 public class ProductController {
@@ -52,9 +55,15 @@ public class ProductController {
             redirectAttributes.addFlashAttribute("error", "Please select a file.");
             return "redirect:/product";
         }
-        Reader reader = new InputStreamReader(upload.getFile().getInputStream());
-        CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
-        List<String[]> rows = csvReader.readAll();
+        List<String[]> rows = null;
+        if (fileName.endsWith(".csv")) {
+            rows = readCSV(upload.getFile().getInputStream());
+        } else if (fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
+            rows = readExcel(upload.getFile().getInputStream());
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Please select a valid file.");
+            return "redirect:/product";
+        }
 
         int incompleteRows = productService.createBulk(rows);
         if(incompleteRows>0){

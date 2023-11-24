@@ -18,6 +18,9 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.List;
 
+import static com.example.royalty.util.ReadFile.readCSV;
+import static com.example.royalty.util.ReadFile.readExcel;
+
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
@@ -64,10 +67,15 @@ public class CustomerController {
             redirectAttributes.addFlashAttribute("error", "Please select a file.");
             return "redirect:/customer";
         }
-        Reader reader = new InputStreamReader(upload.getFile().getInputStream());
-        CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
-        List<String[]> rows = csvReader.readAll();
-
+        List<String[]> rows = null;
+        if (fileName.endsWith(".csv")) {
+            rows = readCSV(upload.getFile().getInputStream());
+        } else if (fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
+            rows = readExcel(upload.getFile().getInputStream());
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Please select a valid file.");
+            return "redirect:/product";
+        }
         int incompleteRows = customerService.createBulk(rows);
         if(incompleteRows>0){
             redirectAttributes.addFlashAttribute("error", "There are "+incompleteRows+" incomplete rows in the file.");
