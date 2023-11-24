@@ -1,16 +1,23 @@
 package com.example.royalty.controller;
 
+import com.example.royalty.dao.BulkUploadDAO;
 import com.example.royalty.dao.GenerateCodeDAO;
 import com.example.royalty.modal.Code;
 import com.example.royalty.modal.Product;
 import com.example.royalty.service.ProductService;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.List;
 
 @Controller
@@ -23,9 +30,12 @@ public class ProductController {
     }
 
     @GetMapping("")
-    public String all(Model model) {
+    public String all(Model model, @ModelAttribute("message") String message,@ModelAttribute("error") String error) {
         List<Product> products = productService.getAll();
         model.addAttribute("products", products);
+        model.addAttribute("upload", new BulkUploadDAO());
+        model.addAttribute("message", message);
+        model.addAttribute("error", error);
         return "products";
     }
 
@@ -33,6 +43,24 @@ public class ProductController {
     public String createPage(Model model) {
         model.addAttribute("product", new Product());
         return "addProduct";
+    }
+
+    @PostMapping("/upload")
+    public String uploadFile(@ModelAttribute("upload") BulkUploadDAO upload, RedirectAttributes redirectAttributes) throws IOException {
+        String fileName = upload.getFile().getOriginalFilename();
+        if (fileName == null || fileName.isEmpty()){
+            redirectAttributes.addFlashAttribute("error", "Please select a file.");
+            return "redirect:/product";
+        }
+        Reader reader = new InputStreamReader(upload.getFile().getInputStream());
+        CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
+        List<String[]> rows = csvReader.readAll();
+
+        int incompleteRows = productService.createBulk(rows);
+        if(incompleteRows>0){
+            redirectAttributes.addFlashAttribute("error", "There are "+incompleteRows+" incomplete rows in the file.");
+        }
+        return "redirect:/product";
     }
 
     @PostMapping("/create")
@@ -99,7 +127,4 @@ public class ProductController {
         }
         return "product";
     }
-
-
-
 }

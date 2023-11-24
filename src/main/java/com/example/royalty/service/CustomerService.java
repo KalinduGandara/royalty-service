@@ -4,13 +4,19 @@ import com.example.royalty.modal.Customer;
 import com.example.royalty.modal.Product;
 import com.example.royalty.modal.User;
 import com.example.royalty.repository.CustomerRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CustomerService {
+
+    Logger logger = LoggerFactory.getLogger(CustomerService.class);
+
 
     private final CustomerRepository customerRepository;
 
@@ -29,18 +35,31 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
-    public void createBulk(List<String[]> rows) {
+    public int createBulk(List<String[]> rows) {
+        List<String[]> incompleteRows = new ArrayList<>();
         for (String[] row : rows) {
-            Customer customer = new Customer();
+            if (row[0].isEmpty() || row[1].isEmpty() || row[2].isEmpty()) {
+                incompleteRows.add(row);
+                continue;
+            }
+            Customer customer = customerRepository.findByNic(row[1]);
+            if (customer != null) {
+                customer.setPoints(customer.getPoints() + Integer.parseInt(row[5]));
+
+            }else {
+                customer = new Customer();
+                customer.setNic(row[1]);
+                customer.setPoints(Integer.parseInt(row[5]));
+            }
             customer.setName(row[0]);
-            customer.setNic(row[1]);
             customer.setPhone(row[2]);
             customer.setAddress(row[3]);
             customer.setArea(row[4]);
-            customer.setPoints(Integer.parseInt(row[5]));
             customer.setNotes(row[6]);
             customerRepository.save(customer);
         }
+        logger.info("Incomplete rows: {}", incompleteRows);
+        return incompleteRows.size();
     }
 
     public boolean update(long id, Customer customer) {

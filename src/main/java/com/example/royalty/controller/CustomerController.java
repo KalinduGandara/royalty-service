@@ -1,5 +1,6 @@
 package com.example.royalty.controller;
 
+import com.example.royalty.dao.BulkUploadDAO;
 import com.example.royalty.modal.Customer;
 import com.example.royalty.service.CustomerService;
 import com.opencsv.CSVReader;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,9 +28,12 @@ public class CustomerController {
         this.customerService = customerService;
     }
     @GetMapping("")
-    public String all(Model model) {
+    public String all(Model model, @ModelAttribute("message") String message,@ModelAttribute("error") String error) {
         List<Customer> customers = customerService.getAll();
         model.addAttribute("customers", customers);
+        model.addAttribute("upload", new BulkUploadDAO());
+        model.addAttribute("message", message);
+        model.addAttribute("error", error);
         return "customers";
     }
 
@@ -53,14 +58,21 @@ public class CustomerController {
     }
 
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
-        Reader reader = new InputStreamReader(file.getInputStream());
+    public String uploadFile(@ModelAttribute("upload") BulkUploadDAO upload, RedirectAttributes redirectAttributes) throws IOException {
+        String fileName = upload.getFile().getOriginalFilename();
+        if (fileName == null || fileName.isEmpty()){
+            redirectAttributes.addFlashAttribute("error", "Please select a file.");
+            return "redirect:/customer";
+        }
+        Reader reader = new InputStreamReader(upload.getFile().getInputStream());
         CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
         List<String[]> rows = csvReader.readAll();
 
-        customerService.createBulk(rows);
-        return "redirect:/";
-
+        int incompleteRows = customerService.createBulk(rows);
+        if(incompleteRows>0){
+            redirectAttributes.addFlashAttribute("error", "There are "+incompleteRows+" incomplete rows in the file.");
+        }
+        return "redirect:/customer";
     }
 
     @GetMapping("/{id}")

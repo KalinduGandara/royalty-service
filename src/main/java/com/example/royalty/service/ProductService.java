@@ -1,17 +1,23 @@
 package com.example.royalty.service;
 
 import com.example.royalty.modal.Code;
+import com.example.royalty.modal.Customer;
 import com.example.royalty.modal.Product;
 import com.example.royalty.repository.CodeRepository;
 import com.example.royalty.repository.ProductRepository;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ProductService {
+
+    Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     private final ProductRepository productRepository;
 
@@ -68,4 +74,28 @@ public class ProductService {
     public List<Code> getCodes(long id) {
         return codeRepository.findAllByProductId(id);
     }
+
+    public int createBulk(List<String[]> rows) {
+        List<String[]> incompleteRows = new ArrayList<>();
+        for (String[] row : rows) {
+            if (row[0].isEmpty() || row[1].isEmpty() || row[2].isEmpty()) {
+                incompleteRows.add(row);
+                continue;
+            }
+            Product product = productRepository.findByCode(row[1]);
+            if (product == null) {
+                product = new Product();
+                product.setCode(row[1]);
+            }
+            product.setName(row[0]);
+            product.setCapacity(Integer.parseInt(row[2]));
+            product.setDescription(row[3]);
+            product.setPoints(Integer.parseInt(row[4]));
+            productRepository.save(product);
+        }
+        logger.info("Incomplete rows: {}", incompleteRows);
+
+        return incompleteRows.size();
+    }
+
 }

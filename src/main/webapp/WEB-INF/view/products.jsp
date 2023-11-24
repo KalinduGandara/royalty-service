@@ -1,3 +1,5 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="from" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +15,13 @@
 <%@include file="nav.jsp" %>
 <h1>Product </h1>
 <br/>
+<%--@elvariable id="upload" type="com.example.royalty.dao.BulkUploadDAO"--%>
+<from:form method="post" action="/product/upload" enctype="multipart/form-data" modelAttribute="upload">
+    <form:input type="file" accept=".csv, .xlsx, .xls" path="file" required="true"/>
+    <form:errors path="file" cssClass="text-danger"/>
+    <button type="submit">Upload</button>
+</from:form>
+
 <table id="dataTable" class="display">
     <thead>
         <tr>
