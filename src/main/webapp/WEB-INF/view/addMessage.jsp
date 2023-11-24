@@ -15,7 +15,7 @@
 <%@include file="nav.jsp" %>
 <h1> Bulk Message </h1>
 <br/>
-<%--@elvariable id="message" type="com.example.royalty.dao.BulkMessage"--%>
+<%--@elvariable id="message" type="com.example.royalty.dao.BulkMessageDAO"--%>
 <form:form action="/message/create" method="post" modelAttribute="message">
 <form:input path="message" type="text" placeholder="Mesage"/>
 <input type="submit" value="Send Message"/>

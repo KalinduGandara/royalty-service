@@ -1,8 +1,7 @@
 package com.example.royalty.controller;
 
-import com.example.royalty.dao.BulkMessage;
+import com.example.royalty.dao.BulkMessageDAO;
 import com.example.royalty.modal.Message;
-import com.example.royalty.modal.Product;
 import com.example.royalty.service.CustomerService;
 import com.example.royalty.service.MessageService;
 import org.springframework.ui.Model;
@@ -33,13 +32,13 @@ public class MessageController {
 
     @GetMapping("/create")
     public String createPage(Model model) {
-        model.addAttribute("message", new BulkMessage());
+        model.addAttribute("message", new BulkMessageDAO());
         model.addAttribute("customers", customerService.getAll());
         return "addMessage";
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute("message")BulkMessage message) {
+    public String create(@ModelAttribute("message") BulkMessageDAO message) {
         System.out.println(message);
         messageService.createBulk(message);
         return "redirect:/message";

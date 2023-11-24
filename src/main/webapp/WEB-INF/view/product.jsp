@@ -12,7 +12,7 @@
 <%@include file="nav.jsp" %>
 <div class="container-fluid">
 
-    <% if (request.getAttribute("message") != null){
+    <% if (request.getAttribute("message") != null && !request.getAttribute("message").toString().isEmpty()){
         String message = request.getAttribute("message").toString();%>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong><%=message%></strong>
@@ -20,6 +20,15 @@
                 <span aria-hidden="true">×</span>
             </button>
         </div>
+    <%} %>
+    <% if (request.getAttribute("error") != null && !request.getAttribute("error").toString().isEmpty()){
+        String error = request.getAttribute("error").toString();%>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong><%=error%></strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
     <%} %>
     <div class="row">
         <div class="col-md-6 p-3">
@@ -58,18 +67,24 @@
 
         <div class="col-md-6 p-3">
             <h2>Generate Codes</h2>
-            <form action="/product/${product.id}/generate" method="post">
+            <%--@elvariable id="code" type="com.example.royalty.dao.GenerateCodeDAO"--%>
+            <form:form action="/product/generate" method="post" modelAttribute="code">
                 <div class="form-group">
-                    <label for="count">Code Count</label>
-                    <input type="number" id="count" name="count" class="form-control"
-                           required/>
+                    <label for="count">Count</label>
+                    <form:hidden path="productId" value="${product.id}"/>
+                    <form:input path="count" type="text" id="count" name="count" class="form-control" required="true"/>
+                    <form:errors path="count" cssClass="text-danger"/>
                 </div>
-                <button type="submit" class="btn btn-primary">Generate</button>
-            </form>
+
+                <button type="submit" class="btn btn-primary">Generate Codes</button>
+            </form:form>
             <hr/>
             <a href="/product/${product.id}/codes" class="btn btn-primary">View Codes</a>
+<%--            <a href="/product/${product.id}/generate" class="btn btn-primary">Generate Codes</a>--%>
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.example.royalty.controller;
 
+import com.example.royalty.dao.GenerateCodeDAO;
 import com.example.royalty.modal.Code;
 import com.example.royalty.modal.Product;
 import com.example.royalty.service.ProductService;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -48,12 +50,15 @@ public class ProductController {
 
 
     @GetMapping("/{id}")
-    public String getOne(@PathVariable long id, Model model) {
+    public String getOne(@PathVariable long id, Model model,@ModelAttribute("message") String message,@ModelAttribute("error") String error) {
         Product product = productService.getById(id);
         if (product == null) {
             return "redirect:/product";
         }
+        model.addAttribute("code", new GenerateCodeDAO(id, 0));
         model.addAttribute("product", product);
+        model.addAttribute("message", message);
+        model.addAttribute("error", error);
         return "product";
     }
     @GetMapping("/{id}/codes")
@@ -63,20 +68,24 @@ public class ProductController {
         return "codes";
     }
 
-    @PostMapping("/{id}/generate")
-    public String generateCode(@PathVariable long id, Model model) {
-        int count = 1;
-        Product product = productService.getById(id);
+    @PostMapping("/generate")
+    public String generateCode(@Valid GenerateCodeDAO code, BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()){
+            System.out.println(result.getAllErrors());
+            redirectAttributes.addFlashAttribute("error", "Count should be greater than 0.");
+            return "redirect:/product/"+code.getProductId();
+        }
+        Product product = productService.getById(code.getProductId());
         if (product == null) {
+            redirectAttributes.addFlashAttribute("error", "Product not found.");
             return "redirect:/product";
         }
-        model.addAttribute("product", product);
-        if(productService.generateCode(product, count)){
-            model.addAttribute("message", "Code Generated Successfully.");
+        if(productService.generateCode(product, code.getCount())){
+            redirectAttributes.addFlashAttribute("message", "Code Generated Successfully.");
         }else {
-            model.addAttribute("message", "Code Generation Failed.");
+            redirectAttributes.addFlashAttribute("error", "Something went wrong.");
         }
-        return "product"+id;
+        return "redirect:/product/"+code.getProductId();
     }
 
     @PostMapping("/{id}")

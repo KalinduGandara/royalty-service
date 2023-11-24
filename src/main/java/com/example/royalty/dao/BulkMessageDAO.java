@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BulkMessage {
+public class BulkMessageDAO {
     String message;
     List<Long> cids;
 

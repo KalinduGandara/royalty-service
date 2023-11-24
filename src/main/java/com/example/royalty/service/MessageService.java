@@ -1,6 +1,6 @@
 package com.example.royalty.service;
 
-import com.example.royalty.dao.BulkMessage;
+import com.example.royalty.dao.BulkMessageDAO;
 import com.example.royalty.modal.Customer;
 import com.example.royalty.modal.Message;
 import com.example.royalty.repository.CustomerRepository;
@@ -26,7 +26,7 @@ public class MessageService {
         return messageRepository.findAll();
     }
 
-    public void createBulk(BulkMessage message) {
+    public void createBulk(BulkMessageDAO message) {
         for (Long cid : message.getCids()) {
             Message message1 = new Message();
             Optional<Customer> optionalCustomer = customerRepository.findById(cid);
