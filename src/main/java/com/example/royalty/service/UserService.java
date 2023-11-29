@@ -51,4 +51,16 @@ public class UserService {
         Optional<User> user = userRepository.findById(id);
         return user.orElse(null);
     }
+
+    public void saveDefaultAdminUser() {
+        if (userRepository.findByName("admin") == null){
+            User adminUser = new User();
+            adminUser.setName("admin");
+            adminUser.setPassword(passwordEncoder.encode("1234"));
+            adminUser.setRoll(0);
+            adminUser.setEid("0");
+            adminUser.setNic("0");
+            userRepository.save(adminUser);
+        }
+    }
 }
