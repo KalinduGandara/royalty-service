@@ -43,7 +43,8 @@
                 </div>
                 <div class="form-group">
                     <label for="code">Code:</label>
-                    <form:input path="code" type="text" id="code" name="code" class="form-control"/>
+                    <form:hidden path="code" />
+                    <input disabled value="${product.code}" type="text" id="code" name="code" class="form-control"/>
                     <form:errors path="code" cssClass="text-danger"/>
                 </div>
                 <div class="form-group">
@@ -54,7 +55,7 @@
                 <div class="form-group">
                     <label for="description">Description:</label>
                     <form:textarea path="description" id="description" name="description"
-                                   class="form-control"></form:textarea>
+                                   class="form-control"/>
                 </div>
                 <div class="form-group">
                     <label for="points">Points:</label>

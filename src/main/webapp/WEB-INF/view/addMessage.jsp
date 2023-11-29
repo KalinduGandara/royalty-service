@@ -17,7 +17,7 @@
 <br/>
 <%--@elvariable id="message" type="com.example.royalty.dao.BulkMessageDAO"--%>
 <form:form action="/message/create" method="post" modelAttribute="message">
-<form:input path="message" type="text" placeholder="Mesage"/>
+<form:textarea path="message" type="text" placeholder="Mesage" rows="5" cols="50"/>
 <input type="submit" value="Send Message"/>
 <table id="dataTable" class="display">
     <thead>
