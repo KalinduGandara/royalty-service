@@ -7,9 +7,9 @@
     <%@ page import="com.example.royalty.modal.Product" %>
     <title>Product</title>
     <!-- Include necessary CSS files -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.dataTables.min.css">
     <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+          href="${pageContext.request.contextPath}/css/bootstrap.min.css">
 </head>
 <body>
 <%@include file="nav.jsp" %>
@@ -53,11 +53,11 @@
 </table>
 
 <!-- Include necessary JS files -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.dataTables.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/dataTables.buttons.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/buttons.html5.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jszip.min.js"></script>
 
 <script>
     $(document).ready( function () {

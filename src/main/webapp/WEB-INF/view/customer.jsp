@@ -6,7 +6,7 @@
 <head>
     <title>View Customer</title>
     <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+          href="${pageContext.request.contextPath}/css/bootstrap.min.css">
 </head>
 <body>
 <%@include file="nav.jsp" %>
