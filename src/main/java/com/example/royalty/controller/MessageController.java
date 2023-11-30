@@ -5,12 +5,11 @@ import com.example.royalty.modal.Message;
 import com.example.royalty.service.CustomerService;
 import com.example.royalty.service.MessageService;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -24,9 +23,22 @@ public class MessageController {
         this.customerService = customerService;
     }
     @GetMapping("")
-    public String all(Model model) {
-        List<Message> messages = messageService.getAll();
+    public String all(Model model,
+                      @RequestParam(required = false, defaultValue = "") String startDate,
+                      @RequestParam(required = false, defaultValue = "") String endDate) {
+        LocalDateTime startDateTime = parseDate(startDate+" 00:00:00", LocalDateTime.now().minusMonths(1));
+        LocalDateTime endDateTime = parseDate(endDate+" 23:59:59", LocalDateTime.now());
+
+        // validate date
+        if (startDateTime.isAfter(endDateTime) || startDateTime.isEqual(endDateTime) || startDateTime.isAfter(LocalDateTime.now()) || endDateTime.isAfter(LocalDateTime.now())) {
+            startDateTime = LocalDateTime.now().minusMonths(1);
+            endDateTime = LocalDateTime.now();
+        }
+        List<Message> messages = messageService.getAllFilterByCreateDate(startDateTime, endDateTime);
         model.addAttribute("messages", messages);
+        model.addAttribute("startDate", startDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        model.addAttribute("endDate", endDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+
         return "messages";
     }
 
@@ -42,5 +54,13 @@ public class MessageController {
         System.out.println(message);
         messageService.createBulk(message);
         return "redirect:/message";
+    }
+
+    private LocalDateTime parseDate(String dateString, LocalDateTime defaultValue) {
+        try {
+            return LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        } catch (Exception e) {
+            return defaultValue;
+        }
     }
 }

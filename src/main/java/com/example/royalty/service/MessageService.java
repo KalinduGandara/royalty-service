@@ -26,6 +26,10 @@ public class MessageService {
         return messageRepository.findAll();
     }
 
+    public List<Message> getAllFilterByCreateDate(LocalDateTime startDate, LocalDateTime endDate) {
+        return messageRepository.findAllByCreateTimeBetween(startDate, endDate);
+    }
+
     public void createBulk(BulkMessageDAO message) {
         for (Long cid : message.getCids()) {
             Message message1 = new Message();
