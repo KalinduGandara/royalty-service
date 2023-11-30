@@ -85,8 +85,6 @@
         </div>
     </div>
 </div>
-
-<script src="${pageContext.request.contextPath}/js/jquery-3.5.1.slim.min" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap.bundle.min" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+<%@include file="footer.jsp" %>
 </body>
 </html>

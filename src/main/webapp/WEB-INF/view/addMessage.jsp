@@ -46,20 +46,8 @@
 </table>
 </form:form>
 
-<%--qweqweqwe--%>
-<%--<form:form action="/message/create" method="post" modelAttribute="message">--%>
-<%--    <form:input path="message" type="text"/>--%>
-
-<%--        <jsp:useBean id="customers" scope="request" type="java.util.List"/>--%>
-<%--        <form:checkboxes path="cid" items="${customers}"/>--%>
-
-<%--</form:form>--%>
 <!-- Include necessary JS files -->
-<script src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.dataTables.min"></script>
-<script src="${pageContext.request.contextPath}/js/dataTables.buttons.min"></script>
-<script src="${pageContext.request.contextPath}/js/buttons.html5.min"></script>
-<script src="${pageContext.request.contextPath}/js/jszip.min"></script>
+<%@include file="footer.jsp" %>
 
 <script>
     $(document).ready( function () {

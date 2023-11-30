@@ -21,7 +21,7 @@
     <form:errors path="file" cssClass="text-danger"/>
     <button type="submit">Upload</button>
 </from:form>
-
+<br/>
 <table id="dataTable" class="display">
     <thead>
         <tr>
@@ -53,11 +53,7 @@
 </table>
 
 <!-- Include necessary JS files -->
-<script src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.dataTables.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/dataTables.buttons.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/buttons.html5.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/jszip.min.js"></script>
+<%@include file="footer.jsp" %>
 
 <script>
     $(document).ready( function () {

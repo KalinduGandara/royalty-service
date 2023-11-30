@@ -41,6 +41,6 @@
     <button type="submit" class="btn btn-primary">Add Product</button>
 </div>
 </form:form>
-
+<%@include file="footer.jsp" %>
 </body>
 </html>

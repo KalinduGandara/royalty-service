@@ -18,6 +18,6 @@
         <p class="lead">This is a Spring Boot JSP Example</p>
     </div>
 </div>
-
+<%@include file="footer.jsp" %>
 </body>
 </html>
