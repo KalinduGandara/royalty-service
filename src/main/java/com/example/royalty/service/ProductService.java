@@ -1,7 +1,6 @@
 package com.example.royalty.service;
 
 import com.example.royalty.modal.Code;
-import com.example.royalty.modal.Customer;
 import com.example.royalty.modal.Product;
 import com.example.royalty.repository.CodeRepository;
 import com.example.royalty.repository.ProductRepository;
@@ -10,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -66,6 +66,7 @@ public class ProductService {
             Code code = new Code();
             code.setCode(generatedString);
             code.setProduct(product);
+            code.setCreated_at(LocalDateTime.now());
             codeRepository.save(code);
         }
         return true;

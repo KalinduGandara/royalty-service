@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "Code")
 @Getter
@@ -21,5 +23,6 @@ public class Code {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    private LocalDateTime created_at;
     private String code;
 }
