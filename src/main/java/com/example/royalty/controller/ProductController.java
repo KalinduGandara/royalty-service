@@ -7,6 +7,7 @@ import com.example.royalty.modal.Product;
 import com.example.royalty.service.ProductService;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +18,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.Reader;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.example.royalty.util.ReadFile.readCSV;
@@ -105,7 +109,7 @@ public class ProductController {
         return "codes";
     }
 
-    @PostMapping("/generate")
+   /* @PostMapping("/generate")
     public String generateCode(@Valid GenerateCodeDAO code, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()){
             System.out.println(result.getAllErrors());
@@ -117,12 +121,41 @@ public class ProductController {
             redirectAttributes.addFlashAttribute("error", "Product not found.");
             return "redirect:/product";
         }
-        if(productService.generateCode(product, code.getCount())){
-            redirectAttributes.addFlashAttribute("message", "Code Generated Successfully.");
-        }else {
-            redirectAttributes.addFlashAttribute("error", "Something went wrong.");
-        }
+//        if(productService.generateCode(product, code.getCount())){
+//            redirectAttributes.addFlashAttribute("message", "Code Generated Successfully.");
+//        }else {
+//            redirectAttributes.addFlashAttribute("error", "Something went wrong.");
+//        }
+        List<Code> codes = productService.generateCode(product, code.getCount());
         return "redirect:/product/"+code.getProductId();
+    }*/
+    @PostMapping("/generate")
+    public void downloadCsv(@ModelAttribute("count") String count,@ModelAttribute("productId") String productId, HttpServletResponse response) throws IOException {
+        int numberOfRows = Integer.parseInt(count);
+        long id = Long.parseLong(productId);
+        Product product = productService.getById(id);
+        if (product == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND,"Product Not Found"); // 404.
+            return;
+        }
+
+        StringBuilder csvContent = new StringBuilder();
+        List<Code> codes = productService.generateCode(product, numberOfRows);
+        csvContent.append("Code\n");
+        for (Code code : codes) {
+            csvContent.append(code.getCode()).append("\n");
+        }
+
+        String fileName = product.getName().replaceAll("\\s+", "_") +"_"+ DateTimeFormatter.ofPattern("yyyyMMddHHmmss").format(LocalDateTime.now()) + ".csv";
+
+        // Set response headers
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename="+fileName);
+
+        // Write CSV content to response
+        try (PrintWriter writer = response.getWriter()) {
+            writer.write(csvContent.toString());
+        }
     }
 
     @PostMapping("/{id}")

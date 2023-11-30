@@ -60,7 +60,8 @@ public class ProductService {
         return product.orElse(null);
     }
 
-    public boolean generateCode(Product product, int count) {
+    public List<Code> generateCode(Product product, int count) {
+        List<Code> codes = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             String generatedString = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
             Code code = new Code();
@@ -68,8 +69,9 @@ public class ProductService {
             code.setProduct(product);
             code.setCreated_at(LocalDateTime.now());
             codeRepository.save(code);
+            codes.add(code);
         }
-        return true;
+        return codes;
     }
 
     public List<Code> getCodes(long id) {

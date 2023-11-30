@@ -49,7 +49,7 @@
 <script>
     $(document).ready( function () {
         // Initialize DataTable
-        var table = $('#dataTable').DataTable();
+        const table = $('#dataTable').DataTable();
 
     });
 </script>

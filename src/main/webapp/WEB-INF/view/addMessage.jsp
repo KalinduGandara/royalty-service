@@ -52,7 +52,7 @@
 <script>
     $(document).ready( function () {
         // Initialize DataTable
-        var table = $('#dataTable').DataTable();
+        const table = $('#dataTable').DataTable();
 
         $('#search').on( 'keyup', function () {
             table.search( this.value ).draw();

@@ -41,12 +41,12 @@
 <script>
     $(document).ready( function () {
         // Initialize DataTable
-        var table = $('#dataTable').DataTable( {
+        const table = $('#dataTable').DataTable({
             dom: 'Bfrtip',
             buttons: [
-                 'csv', 'excel'
+                'csv', 'excel'
             ]
-        } );
+        });
     });
 </script>
 
