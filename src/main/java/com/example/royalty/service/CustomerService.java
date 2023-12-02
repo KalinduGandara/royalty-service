@@ -1,8 +1,6 @@
 package com.example.royalty.service;
 
 import com.example.royalty.modal.Customer;
-import com.example.royalty.modal.Product;
-import com.example.royalty.modal.User;
 import com.example.royalty.repository.CustomerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

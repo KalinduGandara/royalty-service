@@ -1,6 +1,5 @@
 package com.example.royalty.controller;
 
-import com.example.royalty.modal.Product;
 import com.example.royalty.modal.User;
 import com.example.royalty.service.UserService;
 import jakarta.validation.Valid;

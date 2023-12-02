@@ -3,19 +3,14 @@ package com.example.royalty.controller;
 import com.example.royalty.dao.BulkUploadDAO;
 import com.example.royalty.modal.Customer;
 import com.example.royalty.service.CustomerService;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.List;
 
 import static com.example.royalty.util.ReadFile.readCSV;
