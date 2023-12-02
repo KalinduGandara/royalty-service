@@ -30,12 +30,13 @@
            List<User> users = (List<User>) request.getAttribute("users");
 
             for (User user : users) {
+                String description = user.getDescription() == null ? "" : user.getDescription();
         %>
         <tr>
             <td><a href="/user/<%= user.getId()%>"><%= user.getName() %></a></td>
             <td><%= user.getNic() %></td>
             <td><%= user.getEid() %></td>
-            <td><%= user.getDescription() %></td>
+            <td><%= description %></td>
             <td><%= user.getRoll() %></td>
         </tr>
         <%

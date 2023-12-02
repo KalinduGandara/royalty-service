@@ -18,9 +18,9 @@
 <br/>
 <%--@elvariable id="upload" type="com.example.royalty.dao.BulkUploadDAO"--%>
 <from:form method="post" action="/product/upload" enctype="multipart/form-data" modelAttribute="upload">
-    <form:input type="file" accept=".csv, .xlsx, .xls" path="file" required="true"/>
+    <form:input  id="file" type="file" accept=".csv, .xlsx, .xls" path="file" required="true"/>
     <form:errors path="file" cssClass="text-danger"/>
-    <button type="submit">Upload</button>
+    <button class="btn btn-primary" type="submit">Upload</button>
 </from:form>
 <br/>
 <table id="dataTable" class="display">
@@ -39,12 +39,13 @@
            List<Product> products = (List<Product>) request.getAttribute("products");
 
             for (Product product : products) {
+                String description = product.getDescription() == null ? "" : product.getDescription();
         %>
         <tr>
             <td><a href="/product/<%= product.getId()%>"><%= product.getName() %></a></td>
             <td><%= product.getCode() %></td>
             <td><%= product.getCapacity() %></td>
-            <td><%= product.getDescription() %></td>
+            <td><%= description %></td>
             <td><%= product.getPoints() %></td>
         </tr>
         <%

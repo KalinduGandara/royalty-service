@@ -18,9 +18,9 @@
 <br/>
 <%--@elvariable id="upload" type="com.example.royalty.dao.BulkUploadDAO"--%>
 <from:form method="post" action="/customer/upload" enctype="multipart/form-data" modelAttribute="upload">
-    <form:input type="file" accept=".csv, .xlsx, .xls" path="file" required="true"/>
+    <form:input  id="file" type="file" accept=".csv, .xlsx, .xls" path="file" required="true"/>
     <form:errors path="file" cssClass="text-danger"/>
-    <button type="submit">Upload</button>
+    <button class="btn btn-primary" type="submit">Upload</button>
 </from:form>
 
 <br/>
@@ -42,15 +42,18 @@
             List<Customer> customers = (List<Customer>) request.getAttribute("customers");
 
             for (Customer customer : customers) {
+                String address = customer.getAddress() == null ? "" : customer.getAddress();
+                String area = customer.getArea() == null ? "" : customer.getArea();
+                String notes = customer.getNotes() == null ? "" : customer.getNotes();
         %>
         <tr>
                  <td><a href="/customer/<%= customer.getId()%>"><%= customer.getName() %></a></td>
                 <td><%= customer.getNic() %></td>
                 <td><%= customer.getPhone() %></td>
-                <td><%= customer.getAddress() %></td>
-                <td><%= customer.getArea() %></td>
+                <td><%= address %></td>
+                <td><%= area %></td>
                 <td><%= customer.getPoints() %></td>
-                <td><%= customer.getNotes() %></td>
+                <td><%= notes %></td>
         </tr>
         <%
             }
