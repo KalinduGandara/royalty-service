@@ -3,7 +3,7 @@
 <head>
     <%@ page import="java.util.List" %>
     <%@ page import="com.example.royalty.modal.Code" %>
-    <title>Product</title>
+    <title>View Codes</title>
     <!-- Include necessary CSS files -->
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.dataTables.min.css">
     <link rel="stylesheet"

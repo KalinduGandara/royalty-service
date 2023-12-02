@@ -7,9 +7,10 @@
     <%@ page import="com.example.royalty.modal.Message" %>
     <%@ page import="java.time.format.DateTimeFormatter" %>
     <%@ page import="java.time.LocalDateTime" %>
-    <title>Product</title>
+    <title>View Messages</title>
     <!-- Include necessary CSS files -->
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/buttons.bootstrap4.min.css">
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/css/bootstrap.min.css">
 </head>
