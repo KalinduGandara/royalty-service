@@ -56,6 +56,7 @@ public class CustomerService {
             customer.setNotes(row[6]);
             customerRepository.save(customer);
         }
+//        TODO: logging and toast
         logger.info("Incomplete rows: {}", incompleteRows);
         return incompleteRows.size();
     }
@@ -80,5 +81,9 @@ public class CustomerService {
     public Customer getById(long id) {
         Optional<Customer> customer = customerRepository.findById(id);
         return customer.orElse(null);
+    }
+
+    public Customer getByPhone(String phoneNumber) {
+        return customerRepository.findByPhone(phoneNumber);
     }
 }

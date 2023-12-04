@@ -101,4 +101,11 @@ public class ProductService {
         return incompleteRows.size();
     }
 
+    public Product getByCodes(String codeString) {
+        Code code = codeRepository.findByCode(codeString);
+        if(code == null){
+            return null;
+        }
+        return code.getProduct();
+    }
 }

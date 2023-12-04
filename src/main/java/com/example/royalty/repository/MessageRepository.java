@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
     List<Message> findAllByCreateTimeBetween(LocalDateTime startDate, LocalDateTime endDate);
+
+    List<Message> findAllBySend(boolean sent);
 }

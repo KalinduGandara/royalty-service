@@ -16,7 +16,7 @@
 </head>
 <body>
 <%@include file="nav.jsp" %>
-<h1> Product </h1>
+<h1> View Messages </h1>
 <br/>
 <form action="/message" method="get" class="form-inline">
 

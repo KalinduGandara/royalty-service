@@ -41,7 +41,8 @@
      </div>
      <div class="form-group">
          <label for="points">Points:</label>
-         <form:input path="points" type="number" id="points" name="points" class="form-control"/>
+         <input disabled value="${customer.points}" type="number" id="points" name="points" class="form-control"/>
+         <form:hidden path="points"/>
          <form:errors path="points" cssClass="text-danger"/>
      </div>
      <div class="form-group">

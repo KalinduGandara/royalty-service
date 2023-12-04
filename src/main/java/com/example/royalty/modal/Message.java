@@ -27,4 +27,16 @@ public class Message {
     private Boolean send;
     private LocalDateTime sendTime;
 
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + id +
+                ", message='" + message + '\'' +
+                ", phone='" + phone + '\'' +
+                ", cid=" + cid +
+                ", createTime=" + createTime +
+                ", send=" + send +
+                ", sendTime=" + sendTime +
+                '}';
+    }
 }

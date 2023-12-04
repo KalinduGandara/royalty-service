@@ -9,4 +9,5 @@ import java.util.List;
 public interface CodeRepository extends JpaRepository<Code, Long> {
     List<Code> findAllByProduct(Product product);
     List<Code> findAllByProductId(long product_id);
+    Code findByCode(String code);
 }

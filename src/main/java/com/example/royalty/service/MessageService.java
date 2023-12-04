@@ -45,4 +45,17 @@ public class MessageService {
             }
         }
     }
+    public void create(Message message) {
+        message.setCreateTime(LocalDateTime.now());
+        message.setSend(false);
+        messageRepository.save(message);
+    }
+
+    public List<Message> getUnsentMessages() {
+        return messageRepository.findAllBySend(false);
+    }
+
+    public void update(Message message) {
+        messageRepository.save(message);
+    }
 }
