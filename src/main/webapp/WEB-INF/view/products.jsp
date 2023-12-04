@@ -16,6 +16,7 @@
 <%@include file="nav.jsp" %>
 <h1>Product </h1>
 <br/>
+<%@include file="toast.jsp" %>
 <%--@elvariable id="upload" type="com.example.royalty.dao.BulkUploadDAO"--%>
 <from:form method="post" action="/product/upload" enctype="multipart/form-data" modelAttribute="upload">
     <form:input  id="file" type="file" accept=".csv, .xlsx, .xls" path="file" required="true"/>

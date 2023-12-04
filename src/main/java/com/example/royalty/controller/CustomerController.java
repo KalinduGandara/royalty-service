@@ -25,8 +25,9 @@ public class CustomerController {
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
+
     @GetMapping("")
-    public String all(Model model, @ModelAttribute("message") String message,@ModelAttribute("error") String error) {
+    public String all(Model model, @ModelAttribute("message") String message, @ModelAttribute("error") String error) {
         List<Customer> customers = customerService.getAll();
         model.addAttribute("customers", customers);
         model.addAttribute("upload", new BulkUploadDAO());
@@ -43,12 +44,12 @@ public class CustomerController {
     }
 
     @PostMapping("/create")
-    public String create(@Valid @ModelAttribute("customer")Customer customer, BindingResult result) {
-        if (result.hasErrors()){
+    public String create(@Valid @ModelAttribute("customer") Customer customer, BindingResult result) {
+        if (result.hasErrors()) {
             System.out.println(result.getAllErrors());
             return "addCustomer";
         }
-        if (customerService.create(customer)){
+        if (customerService.create(customer)) {
             return "redirect:/customer";
         }
         result.rejectValue("nic", "unique", "NIC is already exist.");
@@ -56,25 +57,38 @@ public class CustomerController {
     }
 
     @PostMapping("/upload")
-    public String uploadFile(@ModelAttribute("upload") BulkUploadDAO upload, RedirectAttributes redirectAttributes) throws IOException {
+    public String uploadFile(@ModelAttribute("upload") BulkUploadDAO upload, RedirectAttributes redirectAttributes) {
         String fileName = upload.getFile().getOriginalFilename();
-        if (fileName == null || fileName.isEmpty()){
+        if (fileName == null || fileName.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Please select a file.");
             return "redirect:/customer";
         }
         List<String[]> rows = null;
-        if (fileName.endsWith(".csv")) {
-            rows = readCSV(upload.getFile().getInputStream());
-        } else if (fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
-            rows = readExcel(upload.getFile().getInputStream());
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Please select a valid file.");
-            return "redirect:/product";
+        String[] headers = {"Name", "NIC", "Phone", "Address", "Area", "Points", "Notes"};
+        try {
+            if (fileName.endsWith(".csv")) {
+                rows = readCSV(upload.getFile().getInputStream(), headers);
+            } else if (fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
+                rows = readExcel(upload.getFile().getInputStream(), headers);
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Please select a valid file.");
+                return "redirect:/customer";
+            }
+        } catch (IOException e) {
+            if (e.getMessage().equalsIgnoreCase("Invalid file headers")) {
+                redirectAttributes.addFlashAttribute("error", "Invalid file headers.");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Something went wrong.");
+            }
+            return "redirect:/customer";
         }
         int incompleteRows = customerService.createBulk(rows);
-        if(incompleteRows>0){
-            redirectAttributes.addFlashAttribute("error", "There are "+incompleteRows+" incomplete rows in the file.");
+        if (incompleteRows > 0) {
+            redirectAttributes.addFlashAttribute("error", "There are " + incompleteRows + " incomplete rows in the file.");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "Customers added successfully.");
         }
+
         return "redirect:/customer";
     }
 
@@ -90,11 +104,11 @@ public class CustomerController {
 
     @PostMapping("/{id}")
     public String update(@PathVariable long id, @Valid @ModelAttribute("customer") Customer customer, BindingResult result) {
-        if (result.hasErrors()){
+        if (result.hasErrors()) {
             System.out.println(result.getAllErrors());
             return "customer";
         }
-        if (customerService.update(id,customer)) {
+        if (customerService.update(id, customer)) {
             return "redirect:/customer";
         }
         return "customer";

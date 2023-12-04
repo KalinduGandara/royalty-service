@@ -12,11 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReadFile {
-    public static List<String[]> readCSV(InputStream inputStream) throws IOException {
+    public static List<String[]> readCSV(InputStream inputStream,String[] headers) throws IOException {
         Reader reader = new InputStreamReader(inputStream);
         CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
         List<String[]> rows = csvReader.readAll();
 
+        // check headers
+        String[] headerRow = rows.get(0);
+        for (int i = 0; i < headers.length; i++) {
+            if (!headerRow[i].equalsIgnoreCase(headers[i])) {
+                throw new IOException("Invalid file headers");
+            }
+        }
         // Handle missing values and add empty string
         for (String[] row : rows) {
             for (int i = 0; i < row.length; i++) {
@@ -29,7 +36,7 @@ public class ReadFile {
         return rows;
     }
 
-    public static List<String[]> readExcel(InputStream inputStream) throws IOException {
+    public static List<String[]> readExcel(InputStream inputStream,String[] headers) throws IOException {
         List<String[]> rows = new ArrayList<>();
         Workbook workbook = WorkbookFactory.create(inputStream);
         Sheet sheet = workbook.getSheetAt(0);
@@ -54,6 +61,13 @@ public class ReadFile {
             }
 
             rows.add(rowData.toArray(new String[0]));
+        }
+        //check headers
+        String[] headerRow = rows.get(0);
+        for (int i = 0; i < headers.length; i++) {
+            if (!headerRow[i].equalsIgnoreCase(headers[i])) {
+                throw new IOException("Invalid file headers");
+            }
         }
 
         workbook.close();
