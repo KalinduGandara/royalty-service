@@ -96,8 +96,9 @@ public class ProductService {
             product.setPoints(Integer.parseInt(row[4]));
             productRepository.save(product);
         }
-        logger.info("Incomplete rows: {}", incompleteRows);
-
+        for (String[] incompleteRow : incompleteRows) {
+            logger.error("Incomplete row: {}", (Object) incompleteRow);
+        }
         return incompleteRows.size();
     }
 

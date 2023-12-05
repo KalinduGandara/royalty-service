@@ -56,8 +56,9 @@ public class CustomerService {
             customer.setNotes(row[6]);
             customerRepository.save(customer);
         }
-//        TODO: logging and toast
-        logger.info("Incomplete rows: {}", incompleteRows);
+        for (String[] incompleteRow : incompleteRows) {
+            logger.error("Incomplete row: {}", (Object) incompleteRow);
+        }
         return incompleteRows.size();
     }
 
