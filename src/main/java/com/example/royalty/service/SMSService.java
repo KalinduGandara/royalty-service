@@ -45,7 +45,7 @@ public class SMSService {
             String smsMessage = message.getMessage();
 
             // Encode message for URL
-            String encodedMessage = java.net.URLEncoder.encode(smsMessage, StandardCharsets.UTF_8.toString());
+            String encodedMessage = java.net.URLEncoder.encode(smsMessage, StandardCharsets.UTF_8);
 
             // Construct the final API request URL
             String requestUrl = API_URL + "?q=" + API_KEY + "&destination=" + destinationNumber + "&message=" + encodedMessage;

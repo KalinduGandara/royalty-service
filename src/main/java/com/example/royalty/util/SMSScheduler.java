@@ -15,7 +15,7 @@ public class SMSScheduler {
         this.smsService = smsService;
     }
 
-    @Scheduled(fixedDelay = 10000) // Execute every 60 seconds
+    @Scheduled(fixedDelay = 10000)
     public void sendUnsentMessages() {
         smsService.sendUnsentMessages();
     }
