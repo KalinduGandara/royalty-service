@@ -2,7 +2,6 @@ package com.example.royalty.modal;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +29,6 @@ public class Customer {
     @NotEmpty(message = "Field area is required.")
     private String area;
     @PositiveOrZero(message = "Points must be greater than 0.")
-    @NotNull(message = "Field points is required.")
     private int points;
     private String notes;
 

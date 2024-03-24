@@ -14,8 +14,8 @@
 <%--JSP Content--%>
 <div class="container">
     <div class="starter-template">
-        <h1>Spring Boot JSP Example</h1>
-        <p class="lead">This is a Spring Boot JSP Example</p>
+        <h1>Home page</h1>
+        <p class="lead">${message}</p>
     </div>
 </div>
 <%@include file="footer.jsp" %>
