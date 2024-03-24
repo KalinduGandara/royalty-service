@@ -4,7 +4,9 @@ import com.example.royalty.dao.BulkMessageDAO;
 import com.example.royalty.modal.Message;
 import com.example.royalty.service.CustomerService;
 import com.example.royalty.service.MessageService;
+import jakarta.validation.Valid;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 
@@ -50,8 +52,13 @@ public class MessageController {
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute("message") BulkMessageDAO message) {
+    public String create(@Valid @ModelAttribute("message") BulkMessageDAO message, BindingResult result,Model model) {
         System.out.println(message);
+        if (result.hasErrors()) {
+            model.addAttribute("customers", customerService.getAll());
+            model.addAttribute("message", message);
+            return "addMessage";
+        }
         messageService.createBulk(message);
         return "redirect:/message";
     }

@@ -13,10 +13,8 @@
 
 <%--JSP Content--%>
 <div class="container">
-    <div class="starter-template">
-        <h1>Home page</h1>
-        <p class="lead">${message}</p>
-    </div>
+    <h1>Pidilite Lanka Customer Loyalty Management System</h1>
+    <img width="1000px" src="${pageContext.request.contextPath}/img/home.jpg" alt="Home page image">
 </div>
 <%@include file="footer.jsp" %>
 </body>
