@@ -15,7 +15,7 @@ public class SMSScheduler {
         this.smsService = smsService;
     }
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelayString = "${sms.scheduler.fixedDelay}")
     public void sendUnsentMessages() {
         smsService.sendUnsentMessages();
     }
