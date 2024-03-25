@@ -86,7 +86,6 @@ public class ProductController {
     @PostMapping("/create")
     public String create(@Valid @ModelAttribute("product") Product product, BindingResult result) {
         if (result.hasErrors()) {
-            System.out.println(result.getAllErrors());
             return "addProduct";
         }
         if (productService.create(product)) {
@@ -103,24 +102,35 @@ public class ProductController {
         if (product == null) {
             return "redirect:/product";
         }
+        LocalDateTime startDateTime = LocalDateTime.now().minusMonths(1);
+        LocalDateTime endDateTime = LocalDateTime.now();
         model.addAttribute("code", new GenerateCodeDAO(id, 0));
         model.addAttribute("product", product);
         model.addAttribute("message", message);
         model.addAttribute("error", error);
+        model.addAttribute("startDate", startDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        model.addAttribute("endDate", endDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         return "product";
     }
 
     @GetMapping("/{id}/codes")
-    public String viewCodes(@PathVariable long id, Model model) {
-        List<Code> codes = productService.getCodes(id);
+    public String viewCodes(@PathVariable long id, Model model,
+                            @RequestParam(required = false, defaultValue = "") String startDate,
+                            @RequestParam(required = false, defaultValue = "") String endDate) {
+        List<Code> codes = productService.getCodesByProductIdAndCreatedDate(
+                id,
+                parseDate(startDate + " 00:00:00", LocalDateTime.now().minusMonths(1)),
+                parseDate(endDate + " 23:59:59", LocalDateTime.now())
+        );
         model.addAttribute("codes", codes);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
         return "codes";
     }
 
     /* @PostMapping("/generate")
      public String generateCode(@Valid GenerateCodeDAO code, BindingResult result, RedirectAttributes redirectAttributes) {
          if (result.hasErrors()){
-             System.out.println(result.getAllErrors());
              redirectAttributes.addFlashAttribute("error", "Count should be greater than 0.");
              return "redirect:/product/"+code.getProductId();
          }
@@ -169,12 +179,19 @@ public class ProductController {
     @PostMapping("/{id}")
     public String update(@PathVariable long id, @Valid @ModelAttribute("product") Product product, BindingResult result) {
         if (result.hasErrors()) {
-            System.out.println(result.getAllErrors());
             return "product";
         }
         if (productService.update(id, product)) {
             return "redirect:/product";
         }
         return "product";
+    }
+
+    private static LocalDateTime parseDate(String dateString, LocalDateTime defaultValue) {
+        try {
+            return LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        } catch (Exception e) {
+            return defaultValue;
+        }
     }
 }

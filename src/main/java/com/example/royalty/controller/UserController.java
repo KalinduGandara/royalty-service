@@ -35,7 +35,6 @@ public class UserController {
     @PostMapping("/create")
     public String create(@Valid @ModelAttribute("user")User user, BindingResult result) {
         if (result.hasErrors()){
-            System.out.println(result.getAllErrors());
             return "addUser";
         }
         if (userService.create(user)){
@@ -59,7 +58,6 @@ public class UserController {
     @PostMapping("/{id}")
     public String update(@PathVariable long id, @Valid @ModelAttribute("user") User user, BindingResult result) {
         if (result.hasErrors()){
-            System.out.println(result.getAllErrors());
             return "user";
         }
         if (userService.update(id,user)) {

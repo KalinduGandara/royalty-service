@@ -77,7 +77,21 @@
                 </div>
                 <button class="btn btn-primary mb-2" type="submit">Download CSV</button>
             </form>
-                <a href="/product/${product.id}/codes" class="btn btn-primary">View Codes</a>
+                <form action="/product/${product.id}/codes" method="get" class="form-inline">
+                    <div class="input-group mb-2 mr-sm-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><label for="startDate">Start Date:</label></div>
+                        </div>
+                        <input class="form-control" type="date" id="startDate" name="startDate" value="${startDate}">
+                    </div>
+                    <div class="input-group mb-2 mr-sm-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><label for="endDate">End Date:</label></div>
+                        </div>
+                        <input class="form-control" type="date" id="endDate" name="endDate" value="${endDate}">
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2">View Codes</button>
+                </form>
         </div>
     </div>
 </div>

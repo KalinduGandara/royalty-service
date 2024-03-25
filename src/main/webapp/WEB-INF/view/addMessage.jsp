@@ -14,14 +14,16 @@
 </head>
 <body>
 <%@include file="nav.jsp" %>
-<div class="container m-2 w-auto">
+<div class="m-2 w-auto">
     <h1> Bulk Message </h1>
     <br/>
     <%--@elvariable id="message" type="com.example.royalty.dao.BulkMessageDAO"--%>
     <form:form action="/message/create" method="post" modelAttribute="message">
         <form:textarea path="message" type="text" placeholder="Mesage" rows="5" cols="50" class="form-control"/>
-        <form:errors path="message" cssClass="text-danger"/>
-        <from:errors path="cids" cssClass="text-danger"/>
+        <div>
+            <form:errors path="message" cssClass="text-danger"/>
+            <from:errors path="cids" cssClass="text-danger"/>
+        </div>
         <input type="submit" value="Send Message" class="btn btn-primary my-2"/>
         <table id="dataTable" class="display">
             <thead>

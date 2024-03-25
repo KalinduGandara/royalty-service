@@ -53,7 +53,6 @@ public class MessageController {
 
     @PostMapping("/create")
     public String create(@Valid @ModelAttribute("message") BulkMessageDAO message, BindingResult result,Model model) {
-        System.out.println(message);
         if (result.hasErrors()) {
             model.addAttribute("customers", customerService.getAll());
             model.addAttribute("message", message);

@@ -67,7 +67,7 @@ public class ProductService {
             Code code = new Code();
             code.setCode(generatedString);
             code.setProduct(product);
-            code.setCreated_at(LocalDateTime.now());
+            code.setCreatedAt(LocalDateTime.now());
             codeRepository.save(code);
             codes.add(code);
         }
@@ -76,6 +76,18 @@ public class ProductService {
 
     public List<Code> getCodes(long id) {
         return codeRepository.findAllByProductId(id);
+    }
+
+    public List<Code> getCodesByProductIdAndCreatedDate(long product_id, LocalDateTime startDate, LocalDateTime endDate) {
+        return codeRepository.findAllByProductIdAndCreatedAtBetween(product_id, startDate, endDate);
+
+
+//        Product product = productRepository.findById(product_id).orElse(null);
+//        if (product == null) {
+//            return new ArrayList<>();
+//        }
+//        return codeRepository.findAllByProductAndCreated_atBetween(product, startDate, endDate);
+
     }
 
     public int createBulk(List<String[]> rows) {

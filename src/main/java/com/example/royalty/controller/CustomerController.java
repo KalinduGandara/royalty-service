@@ -46,7 +46,6 @@ public class CustomerController {
     @PostMapping("/create")
     public String create(@Valid @ModelAttribute("customer") Customer customer, BindingResult result) {
         if (result.hasErrors()) {
-            System.out.println(result.getAllErrors());
             return "addCustomer";
         }
         if (customerService.create(customer)) {
@@ -105,7 +104,6 @@ public class CustomerController {
     @PostMapping("/{id}")
     public String update(@PathVariable long id, @Valid @ModelAttribute("customer") Customer customer, BindingResult result) {
         if (result.hasErrors()) {
-            System.out.println(result.getAllErrors());
             return "customer";
         }
         if (customerService.update(id, customer)) {
