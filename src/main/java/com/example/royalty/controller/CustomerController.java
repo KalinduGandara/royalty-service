@@ -1,6 +1,7 @@
 package com.example.royalty.controller;
 
 import com.example.royalty.dao.BulkUploadDAO;
+import com.example.royalty.dao.RedeemCustomerPoints;
 import com.example.royalty.modal.Customer;
 import com.example.royalty.service.CustomerService;
 import jakarta.validation.Valid;
@@ -98,6 +99,7 @@ public class CustomerController {
             return "redirect:/customer";
         }
         model.addAttribute("customer", customer);
+        model.addAttribute("redeemPoints", new RedeemCustomerPoints());
         return "customer";
     }
 
@@ -109,6 +111,25 @@ public class CustomerController {
         if (customerService.update(id, customer)) {
             return "redirect:/customer";
         }
+        return "customer";
+    }
+
+    @PostMapping("/{id}/redeem")
+    public String redeemCustomer(@PathVariable long id, @Valid @ModelAttribute("redeemPoints") RedeemCustomerPoints points, BindingResult result, Model model) {
+        Customer customer = customerService.getById(id);
+        if (customer == null) {
+            return "redirect:/customer";
+        }
+        model.addAttribute("customer", customer);
+        if (result.hasErrors()) {
+            model.addAttribute("redeemPoints", points);
+            return "customer";
+        }
+        if (customerService.redeemCustomerPoints(customer,points.getRedeemPoints())) {
+            return "redirect:/customer/"+id;
+        }
+        result.rejectValue("redeemPoints", "invalid", "Customers has insufficient points.");
+        model.addAttribute("points", points);
         return "customer";
     }
 

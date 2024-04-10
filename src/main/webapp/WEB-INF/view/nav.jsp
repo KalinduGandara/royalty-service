@@ -44,6 +44,10 @@
                     <a class="dropdown-item" href="/message">View Messages</a>
                 </div>
             </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="/redeem">Redeem</a>
+
+            </li>
 
         </ul>
         <div class="form-inline my-2 my-lg-0">

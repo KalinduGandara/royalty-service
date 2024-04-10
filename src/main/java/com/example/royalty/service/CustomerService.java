@@ -1,5 +1,6 @@
 package com.example.royalty.service;
 
+import com.example.royalty.dao.RedeemPointsDAO;
 import com.example.royalty.modal.Customer;
 import com.example.royalty.repository.CustomerRepository;
 import org.slf4j.Logger;
@@ -86,5 +87,29 @@ public class CustomerService {
 
     public Customer getByPhone(String phoneNumber) {
         return customerRepository.findByPhone(phoneNumber);
+    }
+
+    public boolean redeemPoints(RedeemPointsDAO dao) {
+        List<Customer> customers = customerRepository.findAllById(dao.getCids());
+        int points = dao.getPoints();
+        for (Customer customer : customers) {
+            if (customer.getPoints() < points) {
+                return false;
+            }
+        }
+        for (Customer customer : customers) {
+            customer.setPoints(customer.getPoints() - points);
+        }
+        customerRepository.saveAll(customers);
+        return true;
+    }
+
+    public boolean redeemCustomerPoints(Customer customer, int points) {
+        if (customer.getPoints() < points) {
+            return false;
+        }
+        customer.setPoints(customer.getPoints() - points);
+        customerRepository.save(customer);
+        return true;
     }
 }
