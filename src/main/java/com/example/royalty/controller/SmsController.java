@@ -36,6 +36,7 @@ public class SmsController {
             Message message = new Message();
             message.setPhone(smsRequest.getPhone_number());
             message.setMessage("You are not registered");
+            messageService.create(message);
             return new ResponseEntity<>("Customer not found", HttpStatus.NOT_FOUND);
         }
         Product product = productService.getByCodes(smsRequest.getMessage());
@@ -43,6 +44,7 @@ public class SmsController {
             Message message = new Message();
             message.setPhone(smsRequest.getPhone_number());
             message.setMessage("Product code is invalid");
+            messageService.create(message);
             return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
         }
         customer.setPoints(customer.getPoints() + product.getPoints());
