@@ -1,12 +1,13 @@
 package com.example.royalty.controller;
 
 import com.example.royalty.dao.SmsRequest;
+import com.example.royalty.modal.Code;
 import com.example.royalty.modal.Customer;
 import com.example.royalty.modal.Message;
 import com.example.royalty.modal.Product;
+import com.example.royalty.service.CodeService;
 import com.example.royalty.service.CustomerService;
 import com.example.royalty.service.MessageService;
-import com.example.royalty.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,15 +16,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class SmsController {
 
-    private final ProductService productService;
+    private final CodeService codeService;
     private final CustomerService customerService;
 
     private final MessageService messageService;
 
-    public SmsController(ProductService productService, CustomerService customerService, MessageService messageService) {
-        this.productService = productService;
+    public SmsController(CustomerService customerService, MessageService messageService, CodeService codeService) {
         this.customerService = customerService;
         this.messageService = messageService;
+        this.codeService = codeService;
     }
 
     @PostMapping("/sms-mo-callback")
@@ -39,14 +40,24 @@ public class SmsController {
             messageService.create(message);
             return new ResponseEntity<>("Customer not found", HttpStatus.NOT_FOUND);
         }
-        Product product = productService.getByCodes(smsRequest.getMessage());
-        if (product == null) {
+        String trimmedMessage = smsRequest.getMessage().replaceAll("\\s", "");
+        Code code = codeService.getByCode(trimmedMessage);
+        if (code == null) {
             Message message = new Message();
             message.setPhone(smsRequest.getPhone_number());
-            message.setMessage("Product code is invalid");
+            message.setMessage("Code is invalid");
             messageService.create(message);
-            return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Code is invalid", HttpStatus.NOT_FOUND);
         }
+        if(code.isUsed()){
+            Message message = new Message();
+            message.setPhone(smsRequest.getPhone_number());
+            message.setMessage("Code is already used");
+            messageService.create(message);
+            return new ResponseEntity<>("Code is already used", HttpStatus.NOT_FOUND);
+        }
+        codeService.markAsUsed(code);
+        Product product = code.getProduct();
         customer.setPoints(customer.getPoints() + product.getPoints());
         customerService.update(customer.getId(), customer);
 

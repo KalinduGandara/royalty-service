@@ -23,6 +23,9 @@ public class Code {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @Column(name = "used")
+    private boolean used;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     private String code;
