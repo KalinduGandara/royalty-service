@@ -32,16 +32,16 @@ public class MessageService {
 
     public void createBulk(BulkMessageDAO message) {
         for (Long cid : message.getCids()) {
-            Message message1 = new Message();
+            Message messageSMS = new Message();
             Optional<Customer> optionalCustomer = customerRepository.findById(cid);
             if (optionalCustomer.isPresent()) {
                 Customer customer = optionalCustomer.get();
-                message1.setMessage(message.getMessage());
-                message1.setCid(cid);
-                message1.setPhone(customer.getPhone());
-                message1.setCreateTime(LocalDateTime.now());
-                message1.setSend(false);
-                messageRepository.save(message1);
+                messageSMS.setMessage(message.getMessage());
+                messageSMS.setCid(cid);
+                messageSMS.setPhone(customer.getPhone());
+                messageSMS.setCreateTime(LocalDateTime.now());
+                messageSMS.setSend(false);
+                messageRepository.save(messageSMS);
             }
         }
     }
