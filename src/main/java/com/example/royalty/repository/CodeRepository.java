@@ -13,5 +13,5 @@ public interface CodeRepository extends JpaRepository<Code, Long> {
     Code findByCode(String code);
 
     List<Code> findAllByProductIdAndCreatedAtBetween(long product_id, LocalDateTime startDate, LocalDateTime endDate);
-//    List<Code> findAllByProductAndCreatedAtBetween(Product product, LocalDateTime startDate, LocalDateTime endDate);
+    boolean existsByCode(String generatedString);
 }

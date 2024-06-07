@@ -8,11 +8,10 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ProductService {
@@ -60,10 +59,18 @@ public class ProductService {
         return product.orElse(null);
     }
 
+    @Transactional
     public List<Code> generateCode(Product product, int count) {
         List<Code> codes = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
+        Set<String> uniqueCodes = new HashSet<>();
+
+        while (codes.size() < count) {
             String generatedString = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
+
+            if (uniqueCodes.contains(generatedString) || codeRepository.existsByCode(generatedString)) {
+                continue;
+            }
+            uniqueCodes.add(generatedString);
             Code code = new Code();
             code.setCode(generatedString);
             code.setProduct(product);
@@ -80,13 +87,6 @@ public class ProductService {
 
     public List<Code> getCodesByProductIdAndCreatedDate(long product_id, LocalDateTime startDate, LocalDateTime endDate) {
         return codeRepository.findAllByProductIdAndCreatedAtBetween(product_id, startDate, endDate);
-
-
-//        Product product = productRepository.findById(product_id).orElse(null);
-//        if (product == null) {
-//            return new ArrayList<>();
-//        }
-//        return codeRepository.findAllByProductAndCreated_atBetween(product, startDate, endDate);
 
     }
 

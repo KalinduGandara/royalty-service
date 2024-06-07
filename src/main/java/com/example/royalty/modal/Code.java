@@ -28,5 +28,6 @@ public class Code {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+    @Column(unique = true)
     private String code;
 }
