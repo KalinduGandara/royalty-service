@@ -121,4 +121,8 @@ public class ProductService {
         }
         return code.getProduct();
     }
+
+    public Product findById(Long productId) {
+        return productRepository.findById(productId).orElse(null);
+    }
 }

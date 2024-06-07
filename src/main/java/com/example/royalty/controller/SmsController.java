@@ -1,13 +1,11 @@
 package com.example.royalty.controller;
 
 import com.example.royalty.dao.SmsRequest;
-import com.example.royalty.modal.Code;
-import com.example.royalty.modal.Customer;
-import com.example.royalty.modal.Message;
-import com.example.royalty.modal.Product;
+import com.example.royalty.modal.*;
 import com.example.royalty.service.CodeService;
 import com.example.royalty.service.CustomerService;
 import com.example.royalty.service.MessageService;
+import com.example.royalty.service.ReceivedMessageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +19,12 @@ public class SmsController {
 
     private final MessageService messageService;
 
-    public SmsController(CustomerService customerService, MessageService messageService, CodeService codeService) {
+    private final ReceivedMessageService receivedMessageService;
+    public SmsController(CustomerService customerService, MessageService messageService, CodeService codeService, ReceivedMessageService receivedMessageService) {
         this.customerService = customerService;
         this.messageService = messageService;
         this.codeService = codeService;
+        this.receivedMessageService = receivedMessageService;
     }
 
     @PostMapping("/sms-mo-callback")
@@ -34,6 +34,12 @@ public class SmsController {
 
         Customer customer = customerService.getByPhone(smsRequest.getPhone_number());
         if (customer == null) {
+            ReceivedMessage receivedMessage = new ReceivedMessage();
+            receivedMessage.setMessage(smsRequest.getMessage());
+            receivedMessage.setPhone(smsRequest.getPhone_number());
+            receivedMessage.setStatus("unregistered");
+            receivedMessageService.create(receivedMessage);
+
             Message message = new Message();
             message.setPhone(smsRequest.getPhone_number());
             message.setMessage("You are not registered");
@@ -43,6 +49,13 @@ public class SmsController {
         String trimmedMessage = smsRequest.getMessage().replaceAll("\\s", "");
         Code code = codeService.getByCode(trimmedMessage);
         if (code == null) {
+            ReceivedMessage receivedMessage = new ReceivedMessage();
+            receivedMessage.setMessage(smsRequest.getMessage());
+            receivedMessage.setPhone(smsRequest.getPhone_number());
+            receivedMessage.setCid(customer.getId());
+            receivedMessage.setStatus("invalid");
+            receivedMessageService.create(receivedMessage);
+
             Message message = new Message();
             message.setPhone(smsRequest.getPhone_number());
             message.setCid(customer.getId());
@@ -51,6 +64,14 @@ public class SmsController {
             return new ResponseEntity<>("Code is invalid", HttpStatus.NOT_FOUND);
         }
         if(code.isUsed()){
+
+            ReceivedMessage receivedMessage = new ReceivedMessage();
+            receivedMessage.setMessage(smsRequest.getMessage());
+            receivedMessage.setPhone(smsRequest.getPhone_number());
+            receivedMessage.setCid(customer.getId());
+            receivedMessage.setStatus("used");
+            receivedMessageService.create(receivedMessage);
+
             Message message = new Message();
             message.setPhone(smsRequest.getPhone_number());
             message.setMessage("Code is already used");
@@ -60,15 +81,13 @@ public class SmsController {
         }
         codeService.markAsUsed(code);
         Product product = code.getProduct();
-        customer.setPoints(customer.getPoints() + product.getPoints());
-        customerService.update(customer.getId(), customer);
-
-        Message message = new Message();
-        message.setCid(customer.getId());
-        message.setPhone(customer.getPhone());
-        message.setMessage("You have total " + customer.getPoints() + " points");
-
-        messageService.create(message);
+        ReceivedMessage receivedMessage = new ReceivedMessage();
+        receivedMessage.setMessage(smsRequest.getMessage());
+        receivedMessage.setPhone(smsRequest.getPhone_number());
+        receivedMessage.setCid(customer.getId());
+        receivedMessage.setStatus("valid");
+        receivedMessage.setProductId(product.getId());
+        receivedMessageService.create(receivedMessage);
 
         // Respond with success status and "Success" text
         String responseText = "Success";

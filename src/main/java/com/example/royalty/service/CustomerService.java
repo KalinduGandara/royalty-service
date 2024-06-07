@@ -112,4 +112,8 @@ public class CustomerService {
         customerRepository.save(customer);
         return true;
     }
+
+    public Customer findById(Long cid) {
+        return customerRepository.findById(cid).orElse(null);
+    }
 }

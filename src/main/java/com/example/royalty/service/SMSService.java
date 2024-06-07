@@ -39,7 +39,7 @@ public class SMSService {
             System.out.println("Sending SMS: " + message);
 
             // Destination phone number
-            String destinationNumber = message.getPhone();
+            String destinationNumber = message.getPhone().replaceAll("\\s", "");;
 
             // SMS message
             String smsMessage = message.getMessage();
@@ -47,8 +47,10 @@ public class SMSService {
             // Encode message for URL
             String encodedMessage = java.net.URLEncoder.encode(smsMessage, StandardCharsets.UTF_8);
 
+            String encodedNumber = java.net.URLEncoder.encode(destinationNumber, StandardCharsets.UTF_8);
+
             // Construct the final API request URL
-            String requestUrl = API_URL + "?q=" + API_KEY + "&destination=" + destinationNumber + "&message=" + encodedMessage;
+            String requestUrl = API_URL + "?q=" + API_KEY + "&destination=" + encodedNumber + "&message=" + encodedMessage;
 
             // Create a URL object
             URL url = new URL(requestUrl);
