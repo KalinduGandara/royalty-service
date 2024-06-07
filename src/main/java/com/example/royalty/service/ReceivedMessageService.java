@@ -51,7 +51,7 @@ public class ReceivedMessageService {
             Message message = new Message();
             message.setCid(customer.getId());
             message.setPhone(customer.getPhone());
-            message.setMessage("You have total " + customer.getPoints() + " points");
+            message.setMessage("You have earned " + product.getPoints() + " points for this transaction and total points eared " + customer.getPoints() + ". Thank you");
 
             messageService.create(message);
             receivedMessageRepository.save(receivedMessage);

@@ -42,7 +42,7 @@ public class SmsController {
 
             Message message = new Message();
             message.setPhone(smsRequest.getPhone_number());
-            message.setMessage("You are not registered");
+            message.setMessage("Sorry, you are not registered with the Dr.Fixit – Loyalty program.");
             messageService.create(message);
             return new ResponseEntity<>("Customer not found", HttpStatus.NOT_FOUND);
         }
@@ -59,7 +59,7 @@ public class SmsController {
             Message message = new Message();
             message.setPhone(smsRequest.getPhone_number());
             message.setCid(customer.getId());
-            message.setMessage("Code is invalid");
+            message.setMessage("This code is not valid. Please check and enter the correct code.");
             messageService.create(message);
             return new ResponseEntity<>("Code is invalid", HttpStatus.NOT_FOUND);
         }
@@ -74,7 +74,7 @@ public class SmsController {
 
             Message message = new Message();
             message.setPhone(smsRequest.getPhone_number());
-            message.setMessage("Code is already used");
+            message.setMessage("This code is already used. Please check and enter the correct code.");
             message.setCid(customer.getId());
             messageService.create(message);
             return new ResponseEntity<>("Code is already used", HttpStatus.NOT_FOUND);
