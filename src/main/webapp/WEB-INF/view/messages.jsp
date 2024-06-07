@@ -58,19 +58,21 @@
             String sendTime = message.getSendTime() == null ? "Not Sent" : message.getSendTime().format(formatter);
             String createTime = message.getCreateTime() == null ? "" : message.getCreateTime().format(formatter);
             String send = message.getSend() ? "Yes" : "No";
+            Long cid = message.getCid();
 
     %>
     <tr>
-        <td><%= message.getMessage() %>
+        <td><%= message.getMessage() %></td>
+        <td>
+        <% if (cid != null) { %>
+            <a href="/customer/<%= cid%>"> <%= message.getPhone() %> </a>
+        <% }else {%>
+            <%= message.getPhone() %>
+        <% } %>
         </td>
-        <td><%= message.getPhone() %>
-        </td>
-        <td><%= createTime %>
-        </td>
-        <td><%= send %>
-        </td>
-        <td><%= sendTime %>
-        </td>
+        <td><%= createTime %></td>
+        <td><%= send %></td>
+        <td><%= sendTime %></td>
     </tr>
     <%
         }

@@ -45,6 +45,7 @@ public class SmsController {
         if (code == null) {
             Message message = new Message();
             message.setPhone(smsRequest.getPhone_number());
+            message.setCid(customer.getId());
             message.setMessage("Code is invalid");
             messageService.create(message);
             return new ResponseEntity<>("Code is invalid", HttpStatus.NOT_FOUND);
@@ -53,6 +54,7 @@ public class SmsController {
             Message message = new Message();
             message.setPhone(smsRequest.getPhone_number());
             message.setMessage("Code is already used");
+            message.setCid(customer.getId());
             messageService.create(message);
             return new ResponseEntity<>("Code is already used", HttpStatus.NOT_FOUND);
         }
