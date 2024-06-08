@@ -42,6 +42,7 @@
                 <div class="dropdown-menu" aria-labelledby="createMessageDropdown">
                     <a class="dropdown-item" href="/message/create">Create Bulk Message</a>
                     <a class="dropdown-item" href="/message">View Messages</a>
+                    <a class="dropdown-item" href="/message/received">View Received Messages</a>
                 </div>
             </li>
             <li class="nav-item">

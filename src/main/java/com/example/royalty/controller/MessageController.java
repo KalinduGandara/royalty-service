@@ -2,8 +2,10 @@ package com.example.royalty.controller;
 
 import com.example.royalty.dao.BulkMessageDAO;
 import com.example.royalty.modal.Message;
+import com.example.royalty.modal.ReceivedMessage;
 import com.example.royalty.service.CustomerService;
 import com.example.royalty.service.MessageService;
+import com.example.royalty.service.ReceivedMessageService;
 import jakarta.validation.Valid;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,9 +22,12 @@ public class MessageController {
     private final MessageService messageService;
     private final CustomerService customerService;
 
-    public MessageController(MessageService messageService, CustomerService customerService) {
+    private final ReceivedMessageService receivedMessageService;
+
+    public MessageController(MessageService messageService, CustomerService customerService, ReceivedMessageService receivedMessageService) {
         this.messageService = messageService;
         this.customerService = customerService;
+        this.receivedMessageService = receivedMessageService;
     }
     @GetMapping("")
     public String all(Model model,
@@ -42,6 +47,26 @@ public class MessageController {
         model.addAttribute("endDate", endDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
         return "messages";
+    }
+
+    @GetMapping("/received")
+    public String allReceived(Model model,
+                      @RequestParam(required = false, defaultValue = "") String startDate,
+                      @RequestParam(required = false, defaultValue = "") String endDate) {
+        LocalDateTime startDateTime = parseDate(startDate+" 00:00:00", LocalDateTime.now().minusMonths(1));
+        LocalDateTime endDateTime = parseDate(endDate+" 23:59:59", LocalDateTime.now());
+
+        // validate date
+        if (startDateTime.isAfter(endDateTime) || startDateTime.isEqual(endDateTime) || startDateTime.isAfter(LocalDateTime.now()) || endDateTime.isAfter(LocalDateTime.now())) {
+            startDateTime = LocalDateTime.now().minusMonths(1);
+            endDateTime = LocalDateTime.now();
+        }
+        List<ReceivedMessage> messages = receivedMessageService.getAllFilterByCreateDate(startDateTime, endDateTime);
+        model.addAttribute("messages", messages);
+        model.addAttribute("startDate", startDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        model.addAttribute("endDate", endDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+
+        return "receivedMessages";
     }
 
     @GetMapping("/create")

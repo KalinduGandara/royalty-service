@@ -57,4 +57,8 @@ public class ReceivedMessageService {
             receivedMessageRepository.save(receivedMessage);
         }
     }
+
+    public List<ReceivedMessage> getAllFilterByCreateDate(LocalDateTime startDate, LocalDateTime endDate) {
+        return receivedMessageRepository.findAllByReceivedTimeBetween(startDate, endDate);
+    }
 }
