@@ -12,4 +12,6 @@ public interface ReceivedMessageRepository extends JpaRepository<ReceivedMessage
     List<ReceivedMessage> findAllByStatus(String status);
 
     List<ReceivedMessage> findAllByReceivedTimeBetween(LocalDateTime startDate, LocalDateTime endDate);
+
+    List<ReceivedMessage> findAllByReceivedTimeBetweenAndStatus(LocalDateTime startDateTime, LocalDateTime endDateTime, String status);
 }

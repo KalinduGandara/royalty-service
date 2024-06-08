@@ -61,4 +61,8 @@ public class ReceivedMessageService {
     public List<ReceivedMessage> getAllFilterByCreateDate(LocalDateTime startDate, LocalDateTime endDate) {
         return receivedMessageRepository.findAllByReceivedTimeBetween(startDate, endDate);
     }
+
+    public List<ReceivedMessage> getAllFilterByReceivedTimeAndStatus(LocalDateTime startDateTime, LocalDateTime endDateTime,String status) {
+        return receivedMessageRepository.findAllByReceivedTimeBetweenAndStatus(startDateTime, endDateTime, status);
+    }
 }
