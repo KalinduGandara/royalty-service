@@ -52,7 +52,7 @@ public class CustomerController {
         if (customerService.create(customer)) {
             return "redirect:/customer";
         }
-        result.rejectValue("nic", "unique", "NIC is already exist.");
+        result.rejectValue("tpNumber", "unique", "TP Number is already exist.");
         return "addCustomer";
     }
 
@@ -64,7 +64,9 @@ public class CustomerController {
             return "redirect:/customer";
         }
         List<String[]> rows = null;
-        String[] headers = {"Name", "NIC", "Phone", "Address", "Area", "Points", "Notes"};
+        String[] headers = {"TP Number","Cust Name", "Address", "Telephone No", "City", "District", "Province",
+                "Sales person Territory","Region", "Assigned CMDE", "Loyalty Status", "Current Ave consumption P/M",
+                "Linked dealer 1", "Linked dealer 2","Points"};
         try {
             if (fileName.endsWith(".csv")) {
                 rows = readCSV(upload.getFile().getInputStream(), headers);

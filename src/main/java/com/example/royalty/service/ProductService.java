@@ -45,8 +45,7 @@ public class ProductService {
             return false;
         }
         Product product1 = productOptional.get();
-        product1.setName(product.getName());
-        product1.setCapacity(product.getCapacity());
+        product1.setSku(product.getSku());
         product1.setDescription(product.getDescription());
         product1.setPoints(product.getPoints());
         productRepository.save(product1);
@@ -93,19 +92,18 @@ public class ProductService {
     public int createBulk(List<String[]> rows) {
         List<String[]> incompleteRows = new ArrayList<>();
         for (String[] row : rows) {
-            if (row[0].isEmpty() || row[1].isEmpty() || row[2].isEmpty()) {
+            if (row[0].isEmpty() || row[3].isEmpty() || row[2].isEmpty()) {
                 incompleteRows.add(row);
                 continue;
             }
             Product product = productRepository.findByCode(row[1]);
             if (product == null) {
                 product = new Product();
-                product.setCode(row[1]);
+                product.setCode(row[0]);
             }
-            product.setName(row[0]);
-            product.setCapacity(Integer.parseInt(row[2]));
-            product.setDescription(row[3]);
-            product.setPoints(Integer.parseInt(row[4]));
+            product.setSku(row[2]);
+            product.setDescription(row[1]);
+            product.setPoints(Integer.parseInt(row[3]));
             productRepository.save(product);
         }
         for (String[] incompleteRow : incompleteRows) {
@@ -116,7 +114,7 @@ public class ProductService {
 
     public Product getByCodes(String codeString) {
         Code code = codeRepository.findByCode(codeString);
-        if(code == null){
+        if (code == null) {
             return null;
         }
         return code.getProduct();

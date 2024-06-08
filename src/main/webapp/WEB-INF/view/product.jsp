@@ -21,20 +21,15 @@
             <%--@elvariable id="product" type="com.example.royalty.modal.Product"--%>
             <form:form action="/product/${product.id}" method="post" modelAttribute="product">
                 <div class="form-group">
-                    <label for="name">Name:</label>
-                    <form:input path="name" type="text" id="name" name="name" class="form-control"/>
-                    <form:errors path="name" cssClass="text-danger"/>
-                </div>
-                <div class="form-group">
                     <label for="code">Code:</label>
                     <form:hidden path="code"/>
                     <input disabled value="${product.code}" type="text" id="code" name="code" class="form-control"/>
                     <form:errors path="code" cssClass="text-danger"/>
                 </div>
                 <div class="form-group">
-                    <label for="capacity">Capacity:</label>
-                    <form:input path="capacity" type="number" id="capacity" name="capacity" class="form-control"/>
-                    <form:errors path="capacity" cssClass="text-danger"/>
+                    <label for="name">SKU:</label>
+                    <form:input path="sku" type="text" id="name" name="name" class="form-control"/>
+                    <form:errors path="sku" cssClass="text-danger"/>
                 </div>
                 <div class="form-group">
                     <label for="description">Description:</label>

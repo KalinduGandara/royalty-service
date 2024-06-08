@@ -22,8 +22,9 @@ public class CustomerService {
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
+
     public boolean create(Customer customer) {
-        if (customerRepository.findByNic(customer.getNic()) == null) {
+        if (customerRepository.findByTpNumber(customer.getTpNumber()) == null) {
             customerRepository.save(customer);
             return true;
         }
@@ -37,24 +38,32 @@ public class CustomerService {
     public int createBulk(List<String[]> rows) {
         List<String[]> incompleteRows = new ArrayList<>();
         for (String[] row : rows) {
-            if (row[0].isEmpty() || row[1].isEmpty() || row[2].isEmpty()) {
+            if (row[0].isEmpty() || row[1].isEmpty() || row[2].isEmpty() || row[3].isEmpty() || row[14].isEmpty()) {
                 incompleteRows.add(row);
                 continue;
             }
-            Customer customer = customerRepository.findByNic(row[1]);
+            Customer customer = customerRepository.findByTpNumber(row[0]);
             if (customer != null) {
-                customer.setPoints(customer.getPoints() + Integer.parseInt(row[5]));
+                customer.setPoints(customer.getPoints() + Integer.parseInt(row[14]));
 
-            }else {
+            } else {
                 customer = new Customer();
-                customer.setNic(row[1]);
-                customer.setPoints(Integer.parseInt(row[5]));
+                customer.setPoints(Integer.parseInt(row[14]));
+                customer.setTpNumber(row[0]);
             }
-            customer.setName(row[0]);
-            customer.setPhone(row[2]);
-            customer.setAddress(row[3]);
-            customer.setArea(row[4]);
-            customer.setNotes(row[6]);
+            customer.setName(row[1]);
+            customer.setAddress(row[2]);
+            customer.setPhone(row[3]);
+            customer.setCity(row[4]);
+            customer.setDistrict(row[5]);
+            customer.setProvince(row[6]);
+            customer.setSalesPersonTerritory(row[7]);
+            customer.setRegion(row[8]);
+            customer.setAssignedCMDE(row[9]);
+            customer.setLoyaltyStatus(row[10]);
+            customer.setCurrentAveConsumptionPM(row[11]);
+            customer.setLinkedDealer1(row[12]);
+            customer.setLinkedDealer2(row[13]);
             customerRepository.save(customer);
         }
         for (String[] incompleteRow : incompleteRows) {
@@ -69,13 +78,22 @@ public class CustomerService {
             return false;
         }
         Customer customer1 = customerOptional.get();
-        customer1.setName(customer.getName());
-        customer1.setNic(customer.getNic());
-        customer1.setPhone(customer.getPhone());
         customer1.setAddress(customer.getAddress());
-        customer1.setArea(customer.getArea());
+        customer1.setCity(customer.getCity());
+        customer1.setDistrict(customer.getDistrict());
+        customer1.setLoyaltyStatus(customer.getLoyaltyStatus());
+        customer1.setName(customer.getName());
+        customer1.setPhone(customer.getPhone());
         customer1.setPoints(customer.getPoints());
-        customer1.setNotes(customer.getNotes());
+        customer1.setProvince(customer.getProvince());
+        customer1.setRegion(customer.getRegion());
+        customer1.setSalesPersonTerritory(customer.getSalesPersonTerritory());
+        customer1.setTpNumber(customer.getTpNumber());
+        customer1.setAssignedCMDE(customer.getAssignedCMDE());
+        customer1.setCurrentAveConsumptionPM(customer.getCurrentAveConsumptionPM());
+        customer1.setLinkedDealer1(customer.getLinkedDealer1());
+        customer1.setLinkedDealer2(customer.getLinkedDealer2());
+
         customerRepository.save(customer1);
         return true;
     }

@@ -28,12 +28,21 @@
 <table id="dataTable" class="display">
     <thead>
         <tr>
+            <th>TP Number</th>
             <th>Name</th>
-            <th>NIC</th>
-            <th>Phone Number</th>
             <th>Address</th>
-            <th>Area</th>
+            <th>Phone Number</th>
             <th>Available Points</th>
+            <th>City</th>
+            <th>District</th>
+            <th>Province</th>
+            <th>Sales person Territory </th>
+            <th>Region </th>
+            <th>Assigned CMDE </th>
+            <th>Loyalty status </th>
+            <th>Current Ave  consumption P/M  </th>
+            <th>Linked dealer 1 </th>
+            <th>Linked dealer 2 </th>
             <th>Notes</th>
         </tr>
     </thead>
@@ -44,16 +53,34 @@
 
             for (Customer customer : customers) {
                 String address = customer.getAddress() == null ? "" : customer.getAddress();
-                String area = customer.getArea() == null ? "" : customer.getArea();
+                String city = customer.getCity() == null ? "" : customer.getCity();
+                String district = customer.getDistrict() == null ? "" : customer.getDistrict();
+                String province = customer.getProvince() == null ? "" : customer.getProvince();
+                String salesPersonTerritory = customer.getSalesPersonTerritory() == null ? "" : customer.getSalesPersonTerritory();
+                String region = customer.getRegion() == null ? "" : customer.getRegion();
+                String assignedCMDE = customer.getAssignedCMDE() == null ? "" : customer.getAssignedCMDE();
+                String loyaltyStatus = customer.getLoyaltyStatus() == null ? "" : customer.getLoyaltyStatus();
+                String currentAveConsumptionPM = customer.getCurrentAveConsumptionPM() == null ? "" : customer.getCurrentAveConsumptionPM();
+                String linkedDealer1 = customer.getLinkedDealer1() == null ? "" : customer.getLinkedDealer1();
+                String linkedDealer2 = customer.getLinkedDealer2() == null ? "" : customer.getLinkedDealer2();
                 String notes = customer.getNotes() == null ? "" : customer.getNotes();
         %>
         <tr>
-                 <td><a href="/customer/<%= customer.getId()%>"><%= customer.getName() %></a></td>
-                <td><%= customer.getNic() %></td>
-                <td><%= customer.getPhone() %></td>
+                 <td><a href="/customer/<%= customer.getId()%>"><%= customer.getTpNumber() %></a></td>
+                <td><%= customer.getName() %></td>
                 <td><%= address %></td>
-                <td><%= area %></td>
+                <td><%= customer.getPhone() %></td>
                 <td><%= customer.getPoints() %></td>
+                <td><%= city %></td>
+                <td><%= district %></td>
+                <td><%= province %></td>
+                <td><%= salesPersonTerritory %></td>
+                <td><%= region %></td>
+                <td><%= assignedCMDE %></td>
+                <td><%= loyaltyStatus %></td>
+                <td><%= currentAveConsumptionPM %></td>
+                <td><%= linkedDealer1 %></td>
+                <td><%= linkedDealer2 %></td>
                 <td><%= notes %></td>
         </tr>
         <%

@@ -15,33 +15,60 @@
     <%--@elvariable id="customer" type="com.example.royalty.modal.Customer"--%>
     <form:form action="/customer/create" method="post" modelAttribute="customer">
     <div class="form-group">
-        <label for="name">Name:</label>
-        <form:input path="name" type="text" id="name" name="name" class="form-control" />
-        <form:errors path="name" cssClass="text-danger"/>
+        <label for="tpNumber">TP Number:</label>
+        <form:input path="tpNumber" id="tpNumber" name="tpNumber" class="form-control"></form:input>
     </div>
     <div class="form-group">
-        <label for="nic">NIC:</label>
-        <form:input path="nic" type="text" id="nic" name="nic" class="form-control"/>
-        <form:errors path="nic" cssClass="text-danger"/>
-    </div>
-    <div class="form-group">
-        <label for="phone">Phone:</label>
-        <form:input path="phone" type="text" id="phone" name="phone" class="form-control"/>
-        <form:errors path="phone" cssClass="text-danger"/>
+        <label for="custName">Customer Name:</label>
+        <form:input path="name" id="custName" name="custName" class="form-control"></form:input>
     </div>
     <div class="form-group">
         <label for="address">Address:</label>
-        <form:textarea path="address" id="address" name="address" class="form-control"></form:textarea>
+        <form:input path="address" id="address" name="address" class="form-control"></form:input>
     </div>
     <div class="form-group">
-        <label for="area">Area:</label>
-        <form:input path="area" type="text" id="area" name="area" class="form-control"/>
-        <form:errors path="area" cssClass="text-danger"/>
+        <label for="telephoneNo">Telephone No:</label>
+        <form:input path="phone" id="telephoneNo" name="telephoneNo" class="form-control"></form:input>
     </div>
     <div class="form-group">
-        <label for="points">Points:</label>
-        <form:input path="points" type="number" id="points" name="points" class="form-control"/>
-        <form:errors path="points" cssClass="text-danger"/>
+        <label for="city">City:</label>
+        <form:input path="city" id="city" name="city" class="form-control"></form:input>
+    </div>
+    <div class="form-group">
+        <label for="district">District:</label>
+        <form:input path="district" id="district" name="district" class="form-control"></form:input>
+    </div>
+    <div class="form-group">
+        <label for="province">Province:</label>
+        <form:input path="province" id="province" name="province" class="form-control"></form:input>
+    </div>
+    <div class="form-group">
+        <label for="salesPersonTerritory">Sales Person Territory:</label>
+        <form:input path="salesPersonTerritory" id="salesPersonTerritory" name="salesPersonTerritory" class="form-control"></form:input>
+    </div>
+    <div class="form-group">
+        <label for="region">Region:</label>
+        <form:input path="region" id="region" name="region" class="form-control"></form:input>
+    </div>
+    <div class="form-group">
+        <label for="assignedCMDE">Assigned CMDE:</label>
+        <form:input path="assignedCMDE" id="assignedCMDE" name="assignedCMDE" class="form-control"></form:input>
+    </div>
+    <div class="form-group">
+        <label for="loyaltyStatus">Loyalty Status:</label>
+        <form:input path="loyaltyStatus" id="loyaltyStatus" name="loyaltyStatus" class="form-control"></form:input>
+    </div>
+    <div class="form-group">
+        <label for="currentAveConsumptionPM">Current Ave consumption P/M:</label>
+        <form:input path="currentAveConsumptionPM" id="currentAveConsumptionPM" name="currentAveConsumptionPM" class="form-control"></form:input>
+    </div>
+    <div class="form-group">
+        <label for="linkedDealer1">Linked dealer 1:</label>
+        <form:input path="linkedDealer1" id="linkedDealer1" name="linkedDealer1" class="form-control"></form:input>
+    </div>
+    <div class="form-group">
+        <label for="linkedDealer2">Linked dealer 2:</label>
+        <form:input path="linkedDealer2" id="linkedDealer2" name="linkedDealer2" class="form-control"></form:input>
     </div>
     <div class="form-group">
         <label for="notes">Notes:</label>

@@ -55,7 +55,7 @@ public class ProductController {
             return "redirect:/product";
         }
         List<String[]> rows = null;
-        String[] headers = {"Name", "Code", "Capacity", "Description", "Points"};
+        String[] headers = {"Material", "Mat. Desc", "SKU", "Assigned  Points per pack", "Assigned  Value per pack Rs."};
         try {
             if (fileName.endsWith(".csv")) {
                 rows = readCSV(upload.getFile().getInputStream(), headers);
@@ -164,7 +164,7 @@ public class ProductController {
             csvContent.append(code.getCode()).append("\n");
         }
 
-        String fileName = product.getName().replaceAll("\\s+", "_") + "_" + DateTimeFormatter.ofPattern("yyyyMMddHHmmss").format(LocalDateTime.now()) + ".csv";
+        String fileName = product.getCode().replaceAll("\\s+", "_") + "_" + DateTimeFormatter.ofPattern("yyyyMMddHHmmss").format(LocalDateTime.now()) + ".csv";
 
         // Set response headers
         response.setContentType("text/csv");

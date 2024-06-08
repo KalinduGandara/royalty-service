@@ -4,7 +4,7 @@ import com.example.royalty.modal.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
-    Customer findByNic(String nic);
+    Customer findByTpNumber(String tpNumber);
 
     Customer findByPhone(String phoneNumber);
 }

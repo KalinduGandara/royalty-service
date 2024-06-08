@@ -47,7 +47,9 @@
             </li>
             <li class="nav-item">
                     <a class="nav-link" href="/redeem">Redeem</a>
-
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/report">Report</a>
             </li>
 
         </ul>

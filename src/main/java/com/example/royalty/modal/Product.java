@@ -20,16 +20,13 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @NotEmpty(message = "Field name is required.")
-    private String name;
 
     @NotEmpty(message = "Field code is required.")
     @Column(unique = true)
     private String code;
 
-    @PositiveOrZero(message = "Capacity must be greater than 0.")
-    @NotNull(message = "Field capacity is required.")
-    private Integer capacity;
+    @NotEmpty(message = "Field SKU is required.")
+    private String sku;
 
     private String description;
 

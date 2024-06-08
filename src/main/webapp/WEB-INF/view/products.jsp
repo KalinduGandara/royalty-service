@@ -27,9 +27,8 @@
 <table id="dataTable" class="display">
     <thead>
         <tr>
-            <th>Name</th>
             <th>Code</th>
-            <th>Capacity</th>
+            <th>SKU</th>
             <th>Description</th>
             <th>Points</th>
         </tr>
@@ -43,9 +42,8 @@
                 String description = product.getDescription() == null ? "" : product.getDescription();
         %>
         <tr>
-            <td><a href="/product/<%= product.getId()%>"><%= product.getName() %></a></td>
-            <td><%= product.getCode() %></td>
-            <td><%= product.getCapacity() %></td>
+            <td><a href="/product/<%= product.getId()%>"><%= product.getCode() %></a></td>
+            <td><%= product.getSku() %></td>
             <td><%= description %></td>
             <td><%= product.getPoints() %></td>
         </tr>
