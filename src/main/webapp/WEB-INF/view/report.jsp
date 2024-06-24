@@ -13,7 +13,7 @@
 <body>
 <%@include file="nav.jsp" %>
 <div class="m-2 w-auto">
-    <h1> Redeem Points </h1>
+    <h1> Report generate </h1>
     <br/>
 <%--@elvariable id="report" type="com.example.royalty.dao.GenerateReportDAO"--%>
 <form:form action="/report/master" method="post" modelAttribute="report" cssClass="form-inline">
