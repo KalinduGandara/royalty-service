@@ -16,8 +16,8 @@ import java.util.List;
 public class SMSService {
     private final MessageService messageService;
 //    private static final String API_URL = "https://richcommunication.dialog.lk/api/sms/inline/send";
-    //mock server
-    private static final String API_URL = "http://localhost:8080/api/sms";
+    @Value("${sms.api.url}")
+    private String API_URL;
 
     @Value("${sms.api.key}")
     private String API_KEY;
