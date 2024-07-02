@@ -17,13 +17,7 @@ public class ReadFile {
         CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
         List<String[]> rows = csvReader.readAll();
 
-        // check headers
-        String[] headerRow = rows.get(0);
-        for (int i = 0; i < headers.length; i++) {
-            if (!headerRow[i].replaceAll("\\s", "").equalsIgnoreCase(headers[i].replaceAll("\\s", ""))) {
-                throw new IOException("Invalid file headers");
-            }
-        }
+        checkHeaders(headers, rows);
         // Handle missing values and add empty string
         for (String[] row : rows) {
             for (int i = 0; i < row.length; i++) {
@@ -62,16 +56,23 @@ public class ReadFile {
 
             rows.add(rowData.toArray(new String[0]));
         }
-        //check headers
+        checkHeaders(headers, rows);
+
+        workbook.close();
+        rows.remove(0); // Assuming the first row is a header and needs to be removed
+        return rows;
+    }
+
+
+    private static void checkHeaders(String[] headers, List<String[]> rows) throws IOException {
         String[] headerRow = rows.get(0);
+        if(headerRow.length != headers.length){
+            throw new IOException("Invalid file headers");
+        }
         for (int i = 0; i < headers.length; i++) {
             if (!headerRow[i].replaceAll("\\s", "").equalsIgnoreCase(headers[i].replaceAll("\\s", ""))) {
                 throw new IOException("Invalid file headers");
             }
         }
-
-        workbook.close();
-        rows.remove(0); // Assuming the first row is a header and needs to be removed
-        return rows;
     }
 }
