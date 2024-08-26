@@ -1,6 +1,8 @@
 package com.example.royalty.service;
 
 import com.example.royalty.modal.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ import java.util.List;
 
 @Service
 public class SMSService {
+
+    Logger logger = LoggerFactory.getLogger(SMSService.class);
     private final MessageService messageService;
 //    private static final String API_URL = "https://richcommunication.dialog.lk/api/sms/inline/send";
     @Value("${sms.api.url}")
@@ -36,7 +40,7 @@ public class SMSService {
 
     private void sendSMS(Message message) {
         try {
-            System.out.println("Sending SMS: " + message);
+            logger.info("Sending SMS: " + message);
 
             // Destination phone number
             String destinationNumber = message.getPhone().replaceAll("\\s", "");;
@@ -74,8 +78,7 @@ public class SMSService {
             // Close the BufferedReader
             reader.close();
             // Print the response
-            System.out.println("Response Code: " + responseCode);
-            System.out.println("Response Message: " + response);
+//            logger.info("Response Code: " + responseCode + "--- Response Message: " + response);
             // TODO: Handle the response as needed (update database, log, etc.)
 
             message.setSend(true);

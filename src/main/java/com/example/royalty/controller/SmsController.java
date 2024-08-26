@@ -6,6 +6,8 @@ import com.example.royalty.service.CodeService;
 import com.example.royalty.service.CustomerService;
 import com.example.royalty.service.MessageService;
 import com.example.royalty.service.ReceivedMessageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class SmsController {
 
+    Logger logger = LoggerFactory.getLogger(SmsController.class);
     private final CodeService codeService;
     private final CustomerService customerService;
 
@@ -30,7 +33,7 @@ public class SmsController {
     @PostMapping("/sms-mo-callback")
     public ResponseEntity<String> handleSmsMoCallback(@RequestBody SmsRequest smsRequest) {
         // Process the SMS request here
-        System.out.println("Received SMS MO callback: " + smsRequest);
+        logger.info("Received SMS MO callback: " + smsRequest);
 
         Customer customer = customerService.getByPhone(smsRequest.getPhone_number());
         if (customer == null) {
@@ -44,7 +47,8 @@ public class SmsController {
             message.setPhone(smsRequest.getPhone_number());
             message.setMessage("Sorry, you are not registered with the Dr.Fixit – Loyalty program.");
             messageService.create(message);
-            return new ResponseEntity<>("Customer not found", HttpStatus.NOT_FOUND);
+//            return new ResponseEntity<>("Customer not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Success", HttpStatus.OK);
         }
         String trimmedMessage = smsRequest.getMessage().replaceAll("\\s", "");
         Code code = codeService.getByCode(trimmedMessage);
@@ -61,7 +65,8 @@ public class SmsController {
             message.setCid(customer.getId());
             message.setMessage("This code is not valid. Please check and enter the correct code.");
             messageService.create(message);
-            return new ResponseEntity<>("Code is invalid", HttpStatus.NOT_FOUND);
+//            return new ResponseEntity<>("Code is invalid", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Success", HttpStatus.OK);
         }
         if(code.isUsed()){
 
@@ -77,7 +82,8 @@ public class SmsController {
             message.setMessage("This code is already used. Please check and enter the correct code.");
             message.setCid(customer.getId());
             messageService.create(message);
-            return new ResponseEntity<>("Code is already used", HttpStatus.NOT_FOUND);
+//            return new ResponseEntity<>("Code is already used", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Success", HttpStatus.OK);
         }
         codeService.markAsUsed(code);
         Product product = code.getProduct();
@@ -90,8 +96,7 @@ public class SmsController {
         receivedMessageService.create(receivedMessage);
 
         // Respond with success status and "Success" text
-        String responseText = "Success";
-        return new ResponseEntity<>(responseText, HttpStatus.OK);
+        return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
 //    mock api
