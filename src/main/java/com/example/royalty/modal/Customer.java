@@ -29,7 +29,7 @@ public class Customer {
     private String notes;
 
     @Column(name = "tp_number")
-    @NotEmpty(message = "Field TP Number is required.")
+//    @NotEmpty(message = "Field TP Number is required.")
     private String tpNumber;
     @NotEmpty(message = "Field city is required.")
     private String city;
@@ -40,7 +40,7 @@ public class Customer {
     @NotEmpty(message = "Field Sales person Territory is required.")
     @Column(name = "sales_person_territory")
     private String salesPersonTerritory;
-    @NotEmpty(message = "Field Region is required.")
+//    @NotEmpty(message = "Field Region is required.")
     private String region;
     @NotEmpty(message = "Field Assigned CMDE is required.")
     @Column(name = "assigned_cmde")
