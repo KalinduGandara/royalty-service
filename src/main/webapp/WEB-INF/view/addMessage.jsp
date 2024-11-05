@@ -58,8 +58,11 @@
 
 <script>
     $(document).ready(function () {
-        // Initialize DataTable
-        const table = $('#dataTable').DataTable();
+        // Initialize DataTable with options to display all rows
+        const table = $('#dataTable').DataTable({
+            "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+            "pageLength": 10
+        });
 
         $('#search').on('keyup', function () {
             table.search(this.value).draw();
