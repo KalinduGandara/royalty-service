@@ -22,7 +22,7 @@ public class Customer {
     private String name;
     @NotEmpty(message = "Field phone is required.")
     private String phone;
-    @NotEmpty(message = "Field address is required.")
+//    @NotEmpty(message = "Field address is required.")
     private String address;
     @PositiveOrZero(message = "Points must be greater than 0.")
     private int points;

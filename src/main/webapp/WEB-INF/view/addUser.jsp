@@ -6,6 +6,7 @@
     <title>Add User</title>
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/css/bootstrap.min.css">
+          <meta charset="UTF-8">
 </head>
 <body>
 <%@include file="nav.jsp" %>

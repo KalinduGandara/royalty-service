@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/buttons.bootstrap4.min.css">
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/css/bootstrap.min.css">
+          <meta charset="UTF-8">
 </head>
 <body>
 <%@include file="nav.jsp" %>

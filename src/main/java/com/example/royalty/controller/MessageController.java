@@ -37,7 +37,7 @@ public class MessageController {
         LocalDateTime endDateTime = parseDate(endDate+" 23:59:59", LocalDateTime.now());
 
         // validate date
-        if (startDateTime.isAfter(endDateTime) || startDateTime.isEqual(endDateTime) || startDateTime.isAfter(LocalDateTime.now()) || endDateTime.isAfter(LocalDateTime.now())) {
+        if (startDateTime.isAfter(endDateTime) || startDateTime.isEqual(endDateTime) || startDateTime.isAfter(LocalDateTime.now())) {
             startDateTime = LocalDateTime.now().minusMonths(1);
             endDateTime = LocalDateTime.now();
         }
@@ -57,7 +57,7 @@ public class MessageController {
         LocalDateTime endDateTime = parseDate(endDate+" 23:59:59", LocalDateTime.now());
 
         // validate date
-        if (startDateTime.isAfter(endDateTime) || startDateTime.isEqual(endDateTime) || startDateTime.isAfter(LocalDateTime.now()) || endDateTime.isAfter(LocalDateTime.now())) {
+        if (startDateTime.isAfter(endDateTime) || startDateTime.isEqual(endDateTime) || startDateTime.isAfter(LocalDateTime.now())) {
             startDateTime = LocalDateTime.now().minusMonths(1);
             endDateTime = LocalDateTime.now();
         }

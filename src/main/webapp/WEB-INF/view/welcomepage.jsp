@@ -6,6 +6,7 @@
     <title>Royalty</title>
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/css/bootstrap.min.css">
+          <meta charset="UTF-8">
 </head>
 <body>
 <%--Nav bar--%>
