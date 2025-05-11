@@ -25,7 +25,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Build with Maven
+      - name: Build with Maven (Skip Tests)
         run: mvn -B clean package -DskipTests --file pom.xml
 
       - name: Get version from tag or default
@@ -34,6 +34,10 @@ jobs:
           VERSION=${GITHUB_REF##*/}
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             VERSION="manual-$(date +%Y%m%d%H%M%S)"
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git tag "$VERSION"
+            git push origin "$VERSION"
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
