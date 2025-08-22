@@ -12,6 +12,7 @@
 	<artifactId>royalty</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>loyalty-application</name>
+	<packaging>war</packaging>
 	<description>Loyalty Application</description>
 	<properties>
 		<java.version>17</java.version>
