@@ -50,9 +50,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload release WAR
+      - name: Upload release JAR
         uses: softprops/action-gh-release@v1
         with:
-          files: target/*.war
+          files: target/*.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
