@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -26,6 +28,18 @@ public class SMSService {
     @Value("${sms.api.key}")
     private String API_KEY;
 
+    // Without both of these the sender blocks forever on a gateway that accepts
+    // the connection and then stops answering: the JDK defaults to no timeout at
+    // all, so no exception is ever raised and the scheduler thread never returns.
+    @Value("${sms.api.connect-timeout-ms:5000}")
+    private int connectTimeoutMs;
+
+    @Value("${sms.api.read-timeout-ms:10000}")
+    private int readTimeoutMs;
+
+    @Value("${sms.api.max-consecutive-failures:5}")
+    private int maxConsecutiveFailures;
+
     public SMSService(MessageService messageService) {
         this.messageService = messageService;
     }
@@ -33,17 +47,30 @@ public class SMSService {
     public void sendUnsentMessages() {
         List<Message> unsentMessages = messageService.getUnsentMessages();
 
-        for (Message message : unsentMessages) {
-            sendSMS(message);
+        int consecutiveFailures = 0;
+        for (int i = 0; i < unsentMessages.size(); i++) {
+            if (sendSMS(unsentMessages.get(i))) {
+                consecutiveFailures = 0;
+                continue;
+            }
+            consecutiveFailures++;
+            if (consecutiveFailures >= maxConsecutiveFailures) {
+                // The gateway looks down. Leave the rest queued for the next run
+                // instead of spending a timeout on every message in the backlog.
+                logger.warn("Giving up this run after {} consecutive failures, {} message(s) still queued.",
+                        consecutiveFailures, unsentMessages.size() - i - 1);
+                return;
+            }
         }
     }
 
-    private void sendSMS(Message message) {
+    private boolean sendSMS(Message message) {
+        HttpURLConnection connection = null;
         try {
-            logger.info("Sending SMS: " + message);
+            logger.info("Sending SMS: {}", message);
 
             // Destination phone number
-            String destinationNumber = message.getPhone().replaceAll("\\s", "");;
+            String destinationNumber = message.getPhone().replaceAll("\\s", "");
 
             // SMS message
             String smsMessage = message.getMessage();
@@ -60,36 +87,56 @@ public class SMSService {
             URL url = new URL(requestUrl);
 
             // Open a connection to the URL
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection = (HttpURLConnection) url.openConnection();
 
             // Set the request method to GET
             connection.setRequestMethod("GET");
+            connection.setConnectTimeout(connectTimeoutMs);
+            connection.setReadTimeout(readTimeoutMs);
 
             // Get the response code
             int responseCode = connection.getResponseCode();
-            // Read the response from the API
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line;
-            StringBuilder response = new StringBuilder();
-
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
+            if (responseCode < 200 || responseCode > 299) {
+                // Drain the error stream so the socket can go back to the pool.
+                logger.error("Gateway rejected message {} with status {}: {}",
+                        message.getId(), responseCode, readBody(connection.getErrorStream()));
+                return false;
             }
-            // Close the BufferedReader
-            reader.close();
-            // Print the response
-//            logger.info("Response Code: " + responseCode + "--- Response Message: " + response);
-            // TODO: Handle the response as needed (update database, log, etc.)
+
+            // Read the response from the API
+            String response = readBody(connection.getInputStream());
+            logger.debug("Response Code: {} --- Response Message: {}", responseCode, response);
 
             message.setSend(true);
             message.setSendTime(LocalDateTime.now());
             messageService.update(message);
-
-            // Close the connection
-            connection.disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
+            return true;
+        } catch (IOException e) {
+            // Timeouts land here too, so a sick gateway costs one timeout per
+            // message instead of stopping delivery until the next restart.
+            logger.error("Failed to send message {} to {}: {}",
+                    message.getId(), message.getPhone(), e.toString());
+            return false;
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
     }
-}
 
+    private String readBody(InputStream stream) {
+        if (stream == null) {
+            return "";
+        }
+        StringBuilder response = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+        } catch (IOException e) {
+            logger.warn("Could not read the gateway response: {}", e.toString());
+        }
+        return response.toString();
+    }
+}
