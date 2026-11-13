@@ -1,0 +1,1 @@
+You have earned {points} points for this transaction and total points earned {total}. Thank you

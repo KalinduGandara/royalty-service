@@ -6,6 +6,7 @@ import com.example.royalty.service.CodeService;
 import com.example.royalty.service.CustomerService;
 import com.example.royalty.service.MessageService;
 import com.example.royalty.service.ReceivedMessageService;
+import com.example.royalty.service.SmsMessages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -23,11 +24,15 @@ public class SmsController {
     private final MessageService messageService;
 
     private final ReceivedMessageService receivedMessageService;
-    public SmsController(CustomerService customerService, MessageService messageService, CodeService codeService, ReceivedMessageService receivedMessageService) {
+
+    private final SmsMessages smsMessages;
+
+    public SmsController(CustomerService customerService, MessageService messageService, CodeService codeService, ReceivedMessageService receivedMessageService, SmsMessages smsMessages) {
         this.customerService = customerService;
         this.messageService = messageService;
         this.codeService = codeService;
         this.receivedMessageService = receivedMessageService;
+        this.smsMessages = smsMessages;
     }
 
     @PostMapping("/sms-mo-callback")
@@ -45,7 +50,7 @@ public class SmsController {
 
             Message message = new Message();
             message.setPhone(smsRequest.getPhone_number());
-            message.setMessage("Sorry, you are not registered with the Dr.Fixit – Loyalty program.");
+            message.setMessage(smsMessages.notRegistered());
             messageService.create(message);
 //            return new ResponseEntity<>("Customer not found", HttpStatus.NOT_FOUND);
             return new ResponseEntity<>("Success", HttpStatus.OK);
@@ -63,7 +68,7 @@ public class SmsController {
             Message message = new Message();
             message.setPhone(smsRequest.getPhone_number());
             message.setCid(customer.getId());
-            message.setMessage("This code is not valid. Please check and enter the correct code.");
+            message.setMessage(smsMessages.invalidCode());
             messageService.create(message);
 //            return new ResponseEntity<>("Code is invalid", HttpStatus.NOT_FOUND);
             return new ResponseEntity<>("Success", HttpStatus.OK);
@@ -79,7 +84,7 @@ public class SmsController {
 
             Message message = new Message();
             message.setPhone(smsRequest.getPhone_number());
-            message.setMessage("This code is already used. Please check and enter the correct code.");
+            message.setMessage(smsMessages.usedCode());
             message.setCid(customer.getId());
             messageService.create(message);
 //            return new ResponseEntity<>("Code is already used", HttpStatus.NOT_FOUND);

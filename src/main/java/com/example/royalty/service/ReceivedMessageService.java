@@ -20,11 +20,14 @@ public class ReceivedMessageService {
 
     private final MessageService messageService;
 
-    public ReceivedMessageService(ReceivedMessageRepository receivedMessageRepository, ProductService productService, CustomerService customerService, MessageService messageService) {
+    private final SmsMessages smsMessages;
+
+    public ReceivedMessageService(ReceivedMessageRepository receivedMessageRepository, ProductService productService, CustomerService customerService, MessageService messageService, SmsMessages smsMessages) {
         this.receivedMessageRepository = receivedMessageRepository;
         this.productService = productService;
         this.customerService = customerService;
         this.messageService = messageService;
+        this.smsMessages = smsMessages;
     }
 
     public void create(ReceivedMessage receivedMessage) {
@@ -51,7 +54,7 @@ public class ReceivedMessageService {
             Message message = new Message();
             message.setCid(customer.getId());
             message.setPhone(customer.getPhone());
-            message.setMessage("You have earned " + product.getPoints() + " points for this transaction and total points eared " + customer.getPoints() + ". Thank you");
+            message.setMessage(smsMessages.pointsEarned(product.getPoints(), customer.getPoints()));
 
             messageService.create(message);
             receivedMessageRepository.save(receivedMessage);
